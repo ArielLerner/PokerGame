@@ -1,0 +1,47 @@
+QUE HICE PARA ESCRIBIR LOS RESULTADOS
+ //mano
+        //nada
+        Mano a = new Mano(new Carta[]{new Carta(9, 3), new Carta(4, 1), new Carta(1, 0),
+                new Carta(6, 2), new Carta(7, 0)});
+        //par
+        Mazo m = new Mazo(a);
+        Mano b = new Mano(new Carta[]{new Carta(9, 3), new Carta(4, 1), new Carta(1, 0),
+                new Carta(6, 2), new Carta(1, 1)});
+        //pierna
+        Mano c = new Mano(new Carta[]{new Carta(9, 3), new Carta(4, 1), new Carta(4, 2),
+                new Carta(6, 2), new Carta(4, 3)});
+        //poker
+        Mano d = new Mano(new Carta[]{new Carta(9, 3), new Carta(9, 1), new Carta(9, 0),
+                new Carta(6, 2), new Carta(9, 2)});
+
+        //balanceDeLaRonda
+        BalanceDeLaRonda balance = new BalanceDeLaRonda(0, 0, new int[]{0, 0});
+        //juegoDePoker
+        JuegoPoker juego = new JuegoPoker(new Mazo(), balance);
+        //JugadorMaquina j1 = new JugadorMaquina(param, balance, juego);
+        //int[] conteoDeCasos = PrefabPos.probarTodasLasPosibilidades(param, juego);
+        //System.out.println(conteoDeCasos[x]);
+        Mano[] manos = new Mano[]{a, b, c, d};
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeLaCpu\\probabilidadesPoker\\52cartasMazo.txt"));
+            for (int nroDeMano = 0; nroDeMano < 4; nroDeMano++) {
+                System.out.println(nroDeMano);
+                int[] conteoDeCasos = PrefabPos.probarTodasLasPosibilidades(manos[nroDeMano], juego);
+                for (int nroDeCartasIguales = 1; nroDeCartasIguales < 5; nroDeCartasIguales++) {
+                    double posibilidadesTotales = 0;
+                    for (int v = 0; v < 5; v++) {
+                        posibilidadesTotales = posibilidadesTotales + conteoDeCasos[v];
+                    }
+                     int  nroDeCasos = conteoDeCasos[nroDeCartasIguales];
+                    double prob = nroDeCasos/posibilidadesTotales;
+                    int probabilidad  = (int)(prob*100000);
+                    prob = probabilidad/100000.0;
+                    writer.newLine();
+                    //writer.write("" + (conteoDeCasos[nroDeCartasIguales] / posibilidadesTotales));
+                    writer.write(""+ prob);
+                }
+            }
+            writer.close();
+        } catch (java.io.IOException error) {
+            System.out.println("error");
+        }

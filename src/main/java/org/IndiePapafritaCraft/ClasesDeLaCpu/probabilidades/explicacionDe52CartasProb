@@ -1,0 +1,9 @@
+en 52 cartas prob escribo posibilidades con este formato:
+   linea 1-Tipo De Posibilidades(key del hashmap) escrita en el name de valorDeMano : ejemplo : POKER, NADA , FULL
+   linea 2- Nro de fullProbs a continuacion (int )
+    FullProb(nro de veces que se diga en linea 2 ) :
+            - Nombre del fullProb
+            - probabilidad 0
+            - probabilidad 1
+            etc...
+   Y dsps se repite

@@ -1,0 +1,16 @@
+MetodoApuestas:
+método apuestas(posiciones de los jugadores, economiaJugadores){
+método verApuesta(jugador 1) ----> side effect aumentoi objeto de la clase pozo
+if(jugador 1 subio la apuesta){
+siguiente jugador = jugador 1;
+}
+método verApuesta(jugador 2)
+if(jugador 2 subio la apuesta){
+
+siguienteJugador = jugador 1;
+
+}
+hacer un metodo de mano ordenar
+hacer un metodo de carta estatico buscar mayor
+
+}

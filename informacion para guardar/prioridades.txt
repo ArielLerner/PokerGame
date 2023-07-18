@@ -1,0 +1,19 @@
+Lista De Prioridades para organizacion:
+1.En Proceso/Prioritario:
+TERMINAR JUGADOR REAL Y DECIDIR INPUTS
+hacer que exista una mano y no empieze siempre el jugador 0
+2.Muy Importante:
+-hacer que el file posibilidadesPrefabricadasFuncioneParaTodosLosMazos
+hacer que el juegoPoker tenga una variable de instancia que contenga el primerJugadorDeUnaMano
+3:Importante:
+hacer que el juego poker vaya guardando la posición de la mano
+hacer un test de ElegirEstrategia
+-
+4:Minimamente Importante
+-
+5:Ampliaciones Futuras
+
+-
+6:Mejoras De Algoritmos:
+-
+

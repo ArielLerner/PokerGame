@@ -1,0 +1,21 @@
+METODO MANO:
+CrearJugadores(manos de parámetros,finanzas de los jugadores)
+método Apuesta
+mètodo cambiar cartas
+método Apuesta
+método mostrar
+mètodo asignar el pozo al ganador
+mètodo emitir un mensje al jugador
+
+VerApuesta(metodo):
+factores a considerar:
+jugadores
+mano
+a que te vas a jugar
+que vas a tener si no te sale
+lo que piden los demas
+establecer un patron entre la apuesta de un jugador y lo que tiene
+
+que deberia hacer???
+evaluar las opciones basadas en porcentaje, elegir una aleatoriamente teniendo a la mejor con un porcentaje mayor
+Decidir a que se va a jugar la maquina(metodo)
