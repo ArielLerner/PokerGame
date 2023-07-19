@@ -19,10 +19,14 @@ public class JugadorMaquina extends Jugador {
         boolean[] x = new  boolean[]{false,false,false,false,false};
         return x;
     }
-    public void cambiarMano (Mano x){
-        manoDeJugador = x;
-    }
-
+    public void cambiarMano (Mano x){manoDeJugador = x;}
+    //Los metodos de aviso no necesitan ser implementados en la màquina
+    public void pagarLuzAviso(){}
+    public void repartirCartasAviso(){}
+    public void jugadorVeApuestaAviso(Jugador x){}
+    public void cambioCartasAviso(){}
+    public void finalDeJuegoAviso(){}
+    public void entreManosAviso(){}
     /**
      *
      * @param toleracionDeEstrategiasPeores debe contener un valor entre 0 y 1 que es el margen que se tolera para elegir estrategias

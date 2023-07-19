@@ -8,7 +8,6 @@ public abstract class Jugador {
     protected int finanzas;
     protected int dineroApostado;
     protected  boolean estarEnElJuego;
-
     protected String nombre;
 
     public Jugador(JuegoPoker juego2 , Mano mano, int balanceInicial,String nombreDelJugador ){
