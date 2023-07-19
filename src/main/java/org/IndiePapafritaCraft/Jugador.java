@@ -99,4 +99,8 @@ public abstract class Jugador {
         }
         return contador;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
 }

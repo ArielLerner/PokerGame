@@ -12,16 +12,16 @@ public enum ComparacionDeManos {
         GANA,EMPATE,PIERDE;
         //Metodo que dice que mano gana de A y B
     public static ArrayList<Mano> mejoresManos(ArrayList<Mano> mostrarCartas, int nroMasAltoDelMazo){
-        int mostrarCartasTamaño = mostrarCartas.size();
+        int mostrarCartasTamano = mostrarCartas.size();
         //buscar la mejor mano
         Mano mejorMano = mostrarCartas.get(0);
-        for (int x=0;x<mostrarCartasTamaño;x++){
+        for (int x=0;x<mostrarCartasTamano;x++){
             ComparacionDeManos resultadoMejorMano = ComparacionDeManos.comparar(mejorMano,mostrarCartas.get(x),nroMasAltoDelMazo);
             if (resultadoMejorMano==PIERDE) mejorMano = mostrarCartas.get(x);
         }
         //buscar cuantas manos empatan a la mejor mano
         ArrayList<Mano> mejoresManos = new ArrayList<Mano>();
-        for (int x=0;x<mostrarCartasTamaño;x++){
+        for (int x=0;x<mostrarCartasTamano;x++){
             if (ComparacionDeManos.comparar(mejorMano,mostrarCartas.get(x),nroMasAltoDelMazo)==EMPATE){
                 mejoresManos.add(mostrarCartas.get(x));
             }
@@ -81,8 +81,8 @@ public enum ComparacionDeManos {
         }
         public static ComparacionDeManos DOBLEPAR(Mano A , Mano B){
             //ver cual parGrande gana
-            int nMasGrandeRepeA = ComparacionDeManos.nroRepetidoMásGrande(A);
-            int nMasGrandeRepeB = ComparacionDeManos.nroRepetidoMásGrande(B);
+            int nMasGrandeRepeA = ComparacionDeManos.nroRepetidoMasGrande(A);
+            int nMasGrandeRepeB = ComparacionDeManos.nroRepetidoMasGrande(B);
             if (nMasGrandeRepeA>nMasGrandeRepeB){return GANA;}
             if (nMasGrandeRepeA<nMasGrandeRepeB){return PIERDE;}
             else {
@@ -178,7 +178,7 @@ public enum ComparacionDeManos {
             if (nroA<nroB){return PIERDE;}
             else return EMPATE;
         }
-        private static int nroRepetidoMásGrande(Mano x) {
+        private static int nroRepetidoMasGrande(Mano x) {
             boolean[] nrosRepetidos =  UtilidadesGenerales.IndexDeNumerosQueSeRepiten(x);
             int nroMasGrandeRepetido=-1;
             for (int a=0;a<5;a++){

@@ -104,10 +104,14 @@ public class UtilidadesJuegoPokerTerminal {
             while (nombreNoRepetido == false) {
                 System.out.println("Introducir nombre del jugador numero " + x);
                 nombre = scan.nextLine();
-                // Ahora tengo que chequear si el nombre se repite entonces hago me fijo s en las demas posiciones se repite con esta
+                // Ahora tengo que chequear si el nombre se repite entonces hago me fijo en las demas posiciones se repite con esta
+                nombreNoRepetido = true;
+                for (int a=0; a < nombres.length;a++){
+                    if (nombres[a] == nombre) nombreNoRepetido = false;
+                }
             }
             nombres[x] = nombre;
         }
-
+        return nombres;
     }
 }

@@ -32,11 +32,12 @@ public class JuegoPoker {
         int nroDeBalanceInicial = UtilidadesJuegoPokerTerminal.scanBalanceInicial();
         int precioDeLuz = UtilidadesJuegoPokerTerminal.scanPrecioDeLuz(nroDeBalanceInicial);
         int nroDeJugadores = tipoDeJugadores.length;
+        String[] nombres  = UtilidadesJuegoPokerTerminal.scanNombreDeJugadores(nroDeJugadores);
         Mazo mazo1  = JuegoPoker.crearMazo(nroDeJugadores);
         JuegoPoker juego = new JuegoPoker(mazo1,precioDeLuz);
         //Hacer los jugadores
         Mano[] manos = juego.crearManosDeJugadores(nroDeJugadores);
-        Jugador[] jugadores = juego.crearJugadores(nroDeJugadores,tipoDeJugadores,manos,nroDeBalanceInicial);
+        Jugador[] jugadores = juego.crearJugadores(nroDeJugadores,tipoDeJugadores,manos,nroDeBalanceInicial,nombres);
         juego.setJugadores(jugadores);
         return juego;
     }
@@ -73,7 +74,7 @@ public class JuegoPoker {
         Jugador[] jugadores = new Jugador[nroDeJugadores];
         for (int posActual = 0; posActual < nroDeJugadores; posActual++) {
             if (tipoDeJugadores[posActual] == TipoDeJugador.JUGADOR_DE_LA_MAQUINA) {
-                jugadores[posActual] = new JugadorMaquina(manosDeJugadores[posActual],balanceInicial,nombres[posActual];
+                jugadores[posActual] = new JugadorMaquina(manosDeJugadores[posActual],balanceInicial,this,nombres[posActual]);
             }
             if (tipoDeJugadores[posActual] == TipoDeJugador.JUGADOR_REAL) {
                 jugadores[posActual] = new JugadorReal(manosDeJugadores[posActual],balanceInicial, this, nombres[posActual]);
