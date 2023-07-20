@@ -24,8 +24,10 @@ public class JuegoPoker {
         jugadores=jugadores2;
     }
     public void jugar(){
-        while (true){
+        boolean seguirJugando = true;
+        while (seguirJugando==true ){
             PartesDelJuego.jugarMano(this);
+            for (Jugador jugador : jugadores) jugador.entreManosAviso(seguirJugando);
         }
     }
     /**

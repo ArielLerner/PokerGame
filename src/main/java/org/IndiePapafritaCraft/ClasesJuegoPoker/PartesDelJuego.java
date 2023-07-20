@@ -30,6 +30,8 @@ public class PartesDelJuego {
                 jugadores[x].setEstarEnElJuegoFalse();
             }
         }
+        for (Jugador jugador : juego.getJugadores())
+            jugador.pagarLuzAviso();
     }
 
     public static void repartirCartas(JuegoPoker juego) {
@@ -40,6 +42,8 @@ public class PartesDelJuego {
             if (jugadores[x].getEstarEnElJuego() == true)
                 jugadores[x].setMano(mazo.sacarManoDelMazo(x));
         }
+        for (Jugador jugador : juego.getJugadores())
+            jugador.repartirCartasAviso();
     }
 
     /**
@@ -49,9 +53,7 @@ public class PartesDelJuego {
      */
     public static void primeraApuesta(JuegoPoker juego, int indexDeMano) {
         Jugador[] jugadores = juego.getJugadores();
-        int indexMano = UtilidadesJuegoPoker.buscarIndexDePrimerJugadorEnElJuego(jugadores, indexDeMano);
-        jugadores[indexMano].verApuesta();
-        int ultimoJugadorQueSubio = UtilidadesJuegoPoker.modeloDeApuestaGeneral(indexMano, jugadores);
+        int ultimoJugadorQueSubio = UtilidadesJuegoPoker.Apuesta(juego,indexDeMano);
         //se guarda el ultimo que subio la apuesta, quien comienza la segunda apuesta
         DatosMomentaneos datos = juego.getDatos();
         datos.setIndexUltimoJugadorQueSubioApuesta(ultimoJugadorQueSubio);
@@ -78,8 +80,7 @@ public class PartesDelJuego {
     public static void segundaApuesta(JuegoPoker juego) {
         Jugador[] jugadores = juego.getJugadores();
         int manoDeApuesta = UtilidadesJuegoPoker.buscarIndexDePrimerJugadorEnElJuego(jugadores, juego.getDatos().getIndexUltimoJugadorQueSubioApuesta());
-        jugadores[manoDeApuesta].verApuesta();
-        int ultimoJugadorQueSubio = UtilidadesJuegoPoker.modeloDeApuestaGeneral(manoDeApuesta, jugadores);
+        int ultimoJugadorQueSubio = UtilidadesJuegoPoker.Apuesta(juego, manoDeApuesta);
         //Se guarda el último que subio la apuesta
         DatosMomentaneos datos = juego.getDatos();
         datos.setIndexUltimoJugadorQueSubioApuesta(ultimoJugadorQueSubio);
@@ -110,5 +111,7 @@ public class PartesDelJuego {
             if (x == 0 && jugadoresGanadores.size() > 1)
                 jugadoresGanadores.get(x).sumarXparaFinanzas(restoParaPrimerGanador);
         }
+        //FinalDeJuegoAviso
+        for (Jugador jugador : jugadores)  jugador.finalDelJuegoAviso(mostrarCartas,jugadoresGanadores,pozo);
     }
 }

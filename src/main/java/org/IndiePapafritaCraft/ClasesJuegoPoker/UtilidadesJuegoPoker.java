@@ -7,8 +7,23 @@ import java.util.ArrayList;
 
 public class UtilidadesJuegoPoker {
     /**
+     * @param indexMano es el jugador que le tocaría ser primero pero si decidió no jugar la mano entonces puede ser otro
+     * @return devuelve el index del ultimo jugador en subir
+     */
+    public static int Apuesta(JuegoPoker juego, int indexMano){
+        Jugador[] jugadores = juego.getJugadores();
+        int indexPrimerJugadorEnElJuego = UtilidadesJuegoPoker.buscarIndexDePrimerJugadorEnElJuego(jugadores, indexMano);
+        jugadores[indexMano].verApuesta();
+        //avisoVerApuesta
+        for (Jugador jugador : jugadores )
+            jugador.jugadorVeApuestaAviso(jugadores[indexMano]);
+
+        int ultimoJugadorQueSubio = UtilidadesJuegoPoker.modeloDeApuestaGeneral(indexMano, jugadores);
+        return ultimoJugadorQueSubio;
+    }
+
+    /**
      * Este método permite seguir la apuesta a partir de que un jugador la suba  o vaya dsps del primero
-     *
      * @return devuelve el index del ultimo jugador que subio la apuesta
      */
     public static int modeloDeApuestaGeneral(int indexUltimoJugadorQueSubioApuesta, Jugador[] jugadores) {
@@ -20,6 +35,9 @@ public class UtilidadesJuegoPoker {
                 int indexJugadorActual = indexDeJugadorSiguiente(indexJugadorAnterior, jugadores);
                 if (jugadores[indexJugadorActual].getEstarEnElJuego() == true) {
                     jugadores[indexJugadorActual].verApuesta();
+                    //avisoVeApuesta
+                    for (Jugador jugador : jugadores )
+                        jugador.jugadorVeApuestaAviso(jugadores[indexJugadorActual]);
                     if (seSubioLaApuesta(jugadores, indexJugadorActual) == true) {
                         indexUltimoJugadorQueSubioApuesta = indexJugadorActual;
                         break;
