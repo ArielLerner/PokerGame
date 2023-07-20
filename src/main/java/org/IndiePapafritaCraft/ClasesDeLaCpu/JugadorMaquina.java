@@ -26,7 +26,7 @@ public class JugadorMaquina extends Jugador {
     public void jugadorVeApuestaAviso(Jugador x){}
     public void cambioCartasAviso(){}
     public void finalDelJuegoAviso(ArrayList<Mano> mostrarCartas, ArrayList<Jugador> jugadoresGanadores , int pozo){}
-    public void entreManosAviso(){}
+    public void entreManosAviso(boolean seguirConElJuego){}
     /**
      *
      * @param toleracionDeEstrategiasPeores debe contener un valor entre 0 y 1 que es el margen que se tolera para elegir estrategias
