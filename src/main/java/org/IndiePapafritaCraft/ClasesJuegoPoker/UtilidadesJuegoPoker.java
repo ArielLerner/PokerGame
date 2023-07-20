@@ -103,7 +103,7 @@ public class UtilidadesJuegoPoker {
      */
     public static void ordenarArraylistManosEnMesa(ArrayList<Mano> manosEnMesa, Jugador primerJugador){
         while (true){
-            if (primerJugador.getManoDeJugador() == manosEnMesa.get(0)){
+            if (primerJugador.getMano() == manosEnMesa.get(0)){
                 return;
             }
             else {
@@ -118,7 +118,7 @@ public class UtilidadesJuegoPoker {
         ArrayList<Mano> manosEnMesa = new ArrayList<Mano>();
         for (int x = 0; x < jugadores.length; x++) {
             if (jugadores[x].getEstarEnElJuego() == true) {
-                manosEnMesa.add(jugadores[x].getManoDeJugador());
+                manosEnMesa.add(jugadores[x].getMano());
             }
         }
         //ordenarlo
@@ -144,7 +144,7 @@ public class UtilidadesJuegoPoker {
     }
     public static Jugador buscarJugador (Mano x,Jugador[] jugadores){
         for (int a=0;a<jugadores.length;a++){
-            if (jugadores[a].getManoDeJugador()==x){
+            if (jugadores[a].getMano()==x){
                 return jugadores[a];
             }
         }

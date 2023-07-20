@@ -2,6 +2,8 @@ package org.IndiePapafritaCraft;
 
 import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
 
+import java.util.ArrayList;
+
 public abstract class Jugador {
     protected JuegoPoker juego;
     protected Mano manoDeJugador;
@@ -33,10 +35,10 @@ public abstract class Jugador {
      * este metodo devuelve un aviso dsps de que un jugador haya usado el metodo verApuesta
      */
     public abstract void cambioCartasAviso();
-    public abstract void finalDeJuegoAviso();
+    public abstract void finalDelJuegoAviso(ArrayList<Mano> mostrarCartas, ArrayList<Jugador> jugadoresGanadores , int pozo);
     public abstract void entreManosAviso();
     //metodos normales
-    public Mano getManoDeJugador() {return manoDeJugador;}
+    public Mano getMano() {return manoDeJugador;}
     public void DarMano(Mano manoDeJugador2){
         manoDeJugador = manoDeJugador2;
     }

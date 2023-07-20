@@ -1,8 +1,11 @@
 package org.IndiePapafritaCraft.ClasesJugadorReal;
 
 import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
+import org.IndiePapafritaCraft.ClasesJuegoPoker.UtilidadesJuegoPoker;
 import org.IndiePapafritaCraft.Jugador;
 import org.IndiePapafritaCraft.Mano;
+
+import java.util.ArrayList;
 
 public class JugadorReal extends Jugador {
     public JugadorReal(Mano mano, int balanceInicial, JuegoPoker juegoDePoker, String nombre) {
@@ -20,15 +23,16 @@ public class JugadorReal extends Jugador {
     public void pagarLuzAviso() {
         int nroDeJugEnJuego = 0;
         Jugador[] jugadores = juego.getJugadores();
+        System.out.println("Los jugadores que juegan son : ");
         for (int x = 0; x < jugadores.length; x++) {
             if (jugadores[x].getEstarEnElJuego() == true)
-                nroDeJugEnJuego++;
+                System.out.print(jugadores[x].getNombre() + " , ");
         }
-        System.out.println("El numero de jugadores en esta mano es de " + nroDeJugEnJuego);
+        System.out.println();
     }
 
     public void repartirCartasAviso() {
-        Mano mano = this.getManoDeJugador();
+        Mano mano = this.getMano();
         System.out.println("Mano: ");
         System.out.println(mano);
     }
@@ -42,8 +46,40 @@ public class JugadorReal extends Jugador {
     }
     //Metodos no implementados
     public void cambioCartasAviso() {
+        Mano mano = this.getMano();
+        System.out.println("Mano con cartas cambiadas: ");
+        System.out.println(mano);
     }
-    public void finalDeJuegoAviso() {
+
+    /**
+     * @param pozo debe contener el dinero que habia em el pozo a la hora de final del juego
+     */
+    public void finalDelJuegoAviso(ArrayList<Mano> mostrarCartas, ArrayList<Jugador> jugadoresGanadores , int pozo) {
+        //Println de las cartas que se muestran en mesa
+        for (int x=0;x<mostrarCartas.size();x++){
+            Jugador jugador = UtilidadesJuegoPoker.buscarJugador(mostrarCartas.get(x), juego.getJugadores());
+            System.out.println(" El jugador " + jugador.getNombre() + " tiene: " + jugador.getMano().valorDeLaMano(juego.numeroMayorDelMazo(),true));
+            System.out.println(" Sus cartas son: " + jugador.getMano());
+        }
+        //Println de los ganadores
+            //caso 1 ganador
+        if (jugadoresGanadores.size()==1) {
+            Jugador ganador = jugadoresGanadores.get(0);
+            System.out.println("EL GANADOR ES:");
+            System.out.println("El jugador " + ganador.getNombre() + " quien se lleva el pozo de: " + pozo );
+        }
+            //caso mas de 1 ganador
+        else {
+            System.out.println("Los "+ jugadoresGanadores.size()+"ganadores son:");
+            for (int x=0;x<jugadoresGanadores.size();x++){
+                //calculo de cantidad de dinero que se lleva el jugador
+                int baseParaCadaGanador  =  pozo/jugadoresGanadores.size();
+                int dineroQueRecibe;
+                if (x==0) dineroQueRecibe = baseParaCadaGanador + pozo - (baseParaCadaGanador * jugadoresGanadores.size() );
+                else      dineroQueRecibe = baseParaCadaGanador;
+            System.out.println("El jugador " + jugadoresGanadores.get(x).getNombre() + " se lleva esta cantidad: " + dineroQueRecibe );
+            }
+        }
     }
     public void entreManosAviso() {
     }

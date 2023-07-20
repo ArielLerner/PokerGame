@@ -23,6 +23,11 @@ public class JuegoPoker {
     public void setJugadores(Jugador[] jugadores2){
         jugadores=jugadores2;
     }
+    public void jugar(){
+        while (true){
+            PartesDelJuego.jugarMano(this);
+        }
+    }
     /**
      * @return Crea el juego , con el mazo, el balance de la ronda y los jugadores
      */

@@ -25,7 +25,7 @@ public class JugadorMaquina extends Jugador {
     public void repartirCartasAviso(){}
     public void jugadorVeApuestaAviso(Jugador x){}
     public void cambioCartasAviso(){}
-    public void finalDeJuegoAviso(){}
+    public void finalDelJuegoAviso(ArrayList<Mano> mostrarCartas, ArrayList<Jugador> jugadoresGanadores , int pozo){}
     public void entreManosAviso(){}
     /**
      *
