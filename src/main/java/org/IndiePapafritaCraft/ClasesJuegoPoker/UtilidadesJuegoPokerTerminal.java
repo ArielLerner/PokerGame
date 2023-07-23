@@ -14,18 +14,26 @@ public class UtilidadesJuegoPokerTerminal {
      */
     public static int scanIntEntreDosNros(int nroMenor, int nroMayor) {
         int nroLeido = -1;
+        String stringLeido = "";
         Scanner scan = new Scanner(System.in);
         boolean seCumplenCondiciones = false;
         while (seCumplenCondiciones == false) {
+            stringLeido = scan.nextLine();
+            //En este nesterd try, se hace parseDouble, si sale bien se hace parseInt
             try {
-                System.out.println();
-                nroLeido = Integer.parseInt(scan.nextLine());
-                if (nroLeido >= nroMenor && nroLeido <= nroMayor) {
-                    seCumplenCondiciones = true;
-                } else System.out.println("El numero debe estar entre +" + nroMenor + " y " + nroMayor);
-            } catch (NumberFormatException x) {
-                System.out.println("El numero debe ser entero");
+                Double.parseDouble(stringLeido);
+                try {
+                    nroLeido = Integer.parseInt(stringLeido);
+                    if (nroLeido >= nroMenor && nroLeido <= nroMayor) {
+                        seCumplenCondiciones = true;
+                    } else System.out.println("El numero debe estar entre " + nroMenor + " y " + nroMayor);
+                } catch (NumberFormatException x) {
+                    System.out.println("Introducir un entero");
+                }
+            } catch (Throwable x) {
+                System.out.println("Introducir un número ");
             }
+
         }
         return nroLeido;
     }
@@ -35,28 +43,17 @@ public class UtilidadesJuegoPokerTerminal {
      * si no se devuelve nada da -1
      */
     public static int scanBalanceInicial() {
-        int balanceInicial = -1;
-        Scanner scan = new Scanner(System.in);
-        boolean hayUnNumero = false;
-        while (hayUnNumero == false) {
-            try {
-                System.out.println("¿Con cuanto dinero empiezan los jugadores?");
-                balanceInicial = Integer.parseInt(scan.nextLine());
-                if (balanceInicial > 0 && balanceInicial < 1000) {
-                    hayUnNumero = true;
-                } else {
-                    System.out.println("Que el numero este entre 0 y 1000");
-                }
-            } catch (NumberFormatException x) {
-                System.out.println("Poner un numero entero entre 0 y 1000");
-            }
-        }
+        System.out.println("¿Cuanto dinero empezará teniendo cada jugador?");
+        int balanceInicial = scanIntEntreDosNros(50, 1000);
         return balanceInicial;
     }
 
+    /**
+     * @return la luz debe ser por lo menos el (balanceInicial/5) - 5
+     */
     public static int scanPrecioDeLuz(int nroBalanceInicial) {
         System.out.println("Con cuanto dinero se entra a la mano?");
-        int precioDeLuz = scanIntEntreDosNros(1, nroBalanceInicial);
+        int precioDeLuz = scanIntEntreDosNros(1, (nroBalanceInicial / 5) - 5);
         return precioDeLuz;
     }
 
@@ -66,23 +63,13 @@ public class UtilidadesJuegoPokerTerminal {
      * @return devuelve un array de tipo de jugador con los jugadores de la maquina y los jugadores reales
      */
     public static TipoDeJugador[] scanNroDeJugadores() {
-        Scanner scan = new Scanner(System.in);
+        int jugadoresTotales = 0;
         int jugadoresReales = 0;
-        int jugadoresMaquina = 0;
-        boolean seCumplenCondiciones = false;
         //preguntar al usuario los jugadores
-        while (seCumplenCondiciones == false) {
-            System.out.println("Introducir numero de jugadores ( puede ser de 2 a 5 )");
-            System.out.println("¿Cuantos jugadores reales van a haber?");
-            jugadoresReales = scanIntEntreDosNros(2, 5);
-            jugadoresMaquina = scanIntEntreDosNros(2, 5);
-            int jugadoresTotales = jugadoresReales + jugadoresMaquina;
-            if (jugadoresTotales >= 2 && jugadoresTotales <= 5) {
-                seCumplenCondiciones = true;
-            } else System.out.println("El numero de jugadores debe estar entre 2 y 6");
-        }
+        System.out.println("¿De a cuantos jugadores quieres jugar?");
+        jugadoresTotales = scanIntEntreDosNros(2, 6);
+        jugadoresReales = 1;
         //hacer el array
-        int jugadoresTotales = jugadoresReales + jugadoresMaquina;
         TipoDeJugador[] tipoDeJugador = new TipoDeJugador[jugadoresTotales];
         for (int x = 0; x < jugadoresTotales; x++) {
             if (x < jugadoresReales) {
@@ -99,19 +86,66 @@ public class UtilidadesJuegoPokerTerminal {
         Scanner scan = new Scanner(System.in);
         String[] nombres = new String[nroDeJugadores];
         for (int x = 0; x < nroDeJugadores; x++) {
-            boolean nombreNoRepetido = false;
+            boolean condicionesDeNombre = false;
             String nombre = "";
-            while (nombreNoRepetido == false) {
-                System.out.println("Introducir nombre del jugador numero " + x);
+            while (condicionesDeNombre == false) {
+                System.out.println("Introducir nombre del jugador numero " + (x + 1));
                 nombre = scan.nextLine();
-                // Ahora tengo que chequear si el nombre se repite entonces hago me fijo en las demas posiciones se repite con esta
-                nombreNoRepetido = true;
-                for (int a=0; a < nombres.length;a++){
-                    if (nombres[a] == nombre) nombreNoRepetido = false;
+                nombre = UtilidadesJuegoPokerTerminal.sacarEspaciosAlFinal(nombre);
+                // Ahora voy a chequear las condiciones a.Si es null ; b.Si tiene chars invalidos ; c.Si se repite
+                if (nombre.isEmpty()==false){
+                    if (UtilidadesJuegoPokerTerminal.charDigitosYNumerosValidos(nombre)==true){
+                        if (UtilidadesJuegoPokerTerminal.nombreRepetido(nombre,nombres) == false){
+                            condicionesDeNombre = true;
+                        }
+                        else System.out.println("El nombre no puede repetirse");
+                    }
+                    else System.out.println("Introducir digitos y numeros");
                 }
+                else System.out.println("El nombre no puede estar vacío");
             }
             nombres[x] = nombre;
         }
         return nombres;
+    }
+    /**
+     * Este metodo se fija si hay algun nombrex en []demasNombres
+     */
+    private static boolean nombreRepetido(String nombreX, String[] demasNombres) {
+        for (String nombre : demasNombres) {
+            try {if (nombre.equals(nombreX)) return true;}
+            catch (Throwable x){}
+        }
+        return false;
+    }
+
+    /**
+     * devuelve true si el string esta conformado por numeros y letras
+     */
+    private static boolean charDigitosYNumerosValidos(String nombre){
+        for (char caracter : nombre.toCharArray() ){
+            if (Character.isLetterOrDigit(caracter)==true) continue;
+            else return false;
+        }
+        return true;
+    }
+    /**
+     * @return devuelve un string sin los espacios al final que podía tener el otro
+     * si todo eln nombre tiene espacios puede devolver null
+     */
+    private static String sacarEspaciosAlFinal(String x) {
+        int ultimaPos = x.length() - 1;
+        int primeraPosicSinEspacio = -1;  // de atras para adelante
+        //El 32 en ascii es el espacio
+        for (int posActual = ultimaPos; posActual >= 0; posActual--) {
+            if (Character.valueOf(x.charAt(posActual)) == 32) continue;
+            else {
+                primeraPosicSinEspacio = posActual;
+                break;
+            }
+        }
+        //Hago el string sacando todos los espacios
+        if (primeraPosicSinEspacio == -1) return new String();//Caso, que el nombre este lleno de espacios
+        return x.substring(0, primeraPosicSinEspacio + 1); //El indexFinal del metodo substring no esta incluido entonces hay que agregar 1
     }
 }

@@ -1,14 +1,12 @@
 package org.IndiePapafritaCraft;
 
+import jdk.jshell.execution.Util;
+import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
+import org.IndiePapafritaCraft.ClasesJuegoPoker.UtilidadesJuegoPoker;
+import org.IndiePapafritaCraft.ClasesJuegoPoker.UtilidadesJuegoPokerTerminal;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println(1);
-        System.out.print(2);
-        System.out.print(3);
-
-
-
-
-
-        }
+        JuegoPoker.crearJuegoTerminal();
+    }
     }

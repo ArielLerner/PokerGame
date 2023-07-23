@@ -74,7 +74,7 @@ public class Mazo {
     public  Carta[] division(int comienzo, int cantidad ){
         Carta[] x=new Carta[cantidad];
         for (int a=0;a<cantidad;a++){
-            x[a+comienzo]=mazo[a+comienzo];
+            x[a]=mazo[a+comienzo];
 }
         return x;
     }
