@@ -1,6 +1,6 @@
 package org.IndiePapafritaCraft;
 
-import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesGenerales;
+import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.UtilidadesGenerales;
 import org.IndiePapafritaCraft.ValoresJuntados.ValorDeMano;
 
 public class Mano {

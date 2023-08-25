@@ -1,7 +1,7 @@
 package org.IndiePapafritaCraft.ClasesDeLaCpu;
 
 import org.IndiePapafritaCraft.*;
-import org.IndiePapafritaCraft.BalanceDeLaRonda;
+import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.*;
 import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
 import org.IndiePapafritaCraft.ValoresJuntados.*;
 

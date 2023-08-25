@@ -1,5 +1,6 @@
-package org.IndiePapafritaCraft.ClasesDeLaCpu;
+package org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu;
 
+import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.UtilidadesGenerales;
 import org.IndiePapafritaCraft.Mano;
 import org.IndiePapafritaCraft.ValoresJuntados.FullProb;
 import org.IndiePapafritaCraft.ValoresJuntados.ValorDeMano;

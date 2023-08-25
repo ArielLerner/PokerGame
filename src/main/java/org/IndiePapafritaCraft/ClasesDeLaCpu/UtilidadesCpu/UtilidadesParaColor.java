@@ -1,4 +1,4 @@
-package org.IndiePapafritaCraft.ClasesDeLaCpu;
+package org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu;
 
 import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
 import org.IndiePapafritaCraft.Mano;
