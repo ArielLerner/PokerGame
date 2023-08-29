@@ -2,6 +2,7 @@ package org.IndiePapafritaCraft.ClasesJuegoPoker;
 
 import org.IndiePapafritaCraft.BalanceDeLaRonda;
 import org.IndiePapafritaCraft.ClasesDeLaCpu.JugadorMaquina;
+import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.EstadisticasDelJuegoPoker.ControlarEstadisticasJugMaquina;
 import org.IndiePapafritaCraft.ClasesJugadorReal.JugadorReal;
 import org.IndiePapafritaCraft.Jugador;
 import org.IndiePapafritaCraft.Mano;
@@ -27,6 +28,7 @@ public class JuegoPoker {
         boolean seguirJugando = true;
         while (seguirJugando==true ){
             PartesDelJuego.jugarMano(this);
+            ControlarEstadisticasJugMaquina.anotarManosJugadasCompleto(seguirJugando);
             for (Jugador jugador : jugadores) jugador.entreManosAviso(seguirJugando);
         }
     }
