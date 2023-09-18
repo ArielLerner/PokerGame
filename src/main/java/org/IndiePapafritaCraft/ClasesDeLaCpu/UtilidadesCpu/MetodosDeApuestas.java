@@ -11,16 +11,16 @@ public class MetodosDeApuestas {
     //Métodos de estimaciónDeRondas
 
     /**
-     * @return Este método promedia el nro de rondas/manos jugadas en los ultimos 10 juegos y devuelve un double
+     * @return Este método promedia el nro de rondas/manos jugadas en los ultimos 10 juegos y devuelve un entero que es el promedio con el decimal cortado
      */
-    public static double estimacionDeRondas(){
+    public static int estimacionDeRondas(){
         String filepath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeLaCpu\\UtilidadesCpu\\EstadisticasDelJuegoPoker\\CantDeManosJugadasEn10UltimasPartidas.txt";
         String[]ultimasManos = MetodosDeApuestas.leerManosJugadasEnUltimasPartidas(filepath);
         double promedio = 0;
         for (String x:ultimasManos){promedio = promedio + Double.parseDouble(x);}
         promedio = promedio/ultimasManos.length;
-        return promedio;
-    }
+        int estimacionDeRondas = (int) promedio;
+        return estimacionDeRondas;    }
 
 
     /**
@@ -28,7 +28,7 @@ public class MetodosDeApuestas {
      * Este método debería aplicarse cuando termina un juegoDePoker con la cuenta de manosJugadas
      * @param manosJugadas es la cantDeManos que se jugó en la última partida
      */
-    public static void anotarCantManosJugadas(int manosJugadas) {
+    public static void writerDeManosJugadas(int manosJugadas) {
         try {
             String filepath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeLaCpu\\UtilidadesCpu\\EstadisticasDelJuegoPoker\\CantDeManosJugadasEn10UltimasPartidas.txt";
             String[] ultimasManos = MetodosDeApuestas.leerManosJugadasEnUltimasPartidas(filepath);

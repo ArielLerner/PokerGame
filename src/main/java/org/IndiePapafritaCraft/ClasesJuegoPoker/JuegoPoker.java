@@ -2,7 +2,8 @@ package org.IndiePapafritaCraft.ClasesJuegoPoker;
 
 import org.IndiePapafritaCraft.BalanceDeLaRonda;
 import org.IndiePapafritaCraft.ClasesDeLaCpu.JugadorMaquina;
-import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.EstadisticasDelJuegoPoker.ControlarEstadisticasJugMaquina;
+import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.EstadisticasDelJuegoPoker.DatosEstadisticos;
+import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.EstadisticasDelJuegoPoker.DatosParaApuesta;
 import org.IndiePapafritaCraft.ClasesJugadorReal.JugadorReal;
 import org.IndiePapafritaCraft.Jugador;
 import org.IndiePapafritaCraft.Mano;
@@ -15,7 +16,14 @@ public class JuegoPoker {
     private Jugador[] jugadores;
 
     private DatosMomentaneos datos;
-
+    public void jugar(){
+        boolean seguirJugando = true;
+        while (seguirJugando==true ){
+            PartesDelJuego.jugarMano(this);
+            DatosParaApuesta.singletonDatos().ActualizacionFinDeMano(seguirJugando);
+            for (Jugador jugador : jugadores) jugador.entreManosAviso(seguirJugando);
+        }
+    }
     public JuegoPoker(Mazo mazoDelJuego, int precioDeLuz2) {
         mazo = mazoDelJuego;
         precioDeLuz= precioDeLuz2;
@@ -23,14 +31,6 @@ public class JuegoPoker {
     }
     public void setJugadores(Jugador[] jugadores2){
         jugadores=jugadores2;
-    }
-    public void jugar(){
-        boolean seguirJugando = true;
-        while (seguirJugando==true ){
-            PartesDelJuego.jugarMano(this);
-            ControlarEstadisticasJugMaquina.anotarManosJugadasCompleto(seguirJugando);
-            for (Jugador jugador : jugadores) jugador.entreManosAviso(seguirJugando);
-        }
     }
     /**
      * @return Crea el juego , con el mazo, el balance de la ronda y los jugadores
