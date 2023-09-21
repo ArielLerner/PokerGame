@@ -13,10 +13,11 @@ import java.io.FileWriter;
 
 public class Main {
     public static void main(String[] args) {
-        try {
-            String filepath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeLaCpu\\UtilidadesCpu\\EstadisticasDelJuegoPoker\\CantDeManosJugadasEn10UltimasPartidas.txt";
-            System.out.println(MetodosDeApuestas.estimacionDeRondas());
-
-        } catch (Exception x){}
+        double[][] puntos  = {
+        };
+        double[] resultados = MetodosDeApuestas.regresionCuadratica(puntos);
+        System.out.println("a: " + resultados[0]);
+        System.out.println("b: " + resultados[1]);
+        System.out.println("c: " + resultados[2]);
     }
 }

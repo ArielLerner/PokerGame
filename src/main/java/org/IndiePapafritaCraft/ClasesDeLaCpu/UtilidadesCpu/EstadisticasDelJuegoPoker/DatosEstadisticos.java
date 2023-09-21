@@ -1,6 +1,7 @@
 package org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.EstadisticasDelJuegoPoker;
 
 import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.MetodosDeApuestas;
+import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
 
 public class DatosEstadisticos {
     DatosEstadisticos(int estimacionDeRondas2){
@@ -8,6 +9,7 @@ public class DatosEstadisticos {
         rondasJugadas = estimacionDeRondas;
         rondasJugadas = 0;
     }
+    public JuegoPoker juego;
     public int estimacionDeRondas;
     public int rondasRestantes;
     public int rondasJugadas;
