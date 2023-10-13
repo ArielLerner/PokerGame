@@ -1,8 +1,8 @@
 package org.IndiePapafritaCraft.ClasesJuegoPoker;
 
-import org.IndiePapafritaCraft.Carta;
-import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.UtilidadesGenerales;
-import org.IndiePapafritaCraft.Mano;
+import org.IndiePapafritaCraft.ClasesRestantes.Carta;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.utilidades.UtilidadesGenerales;
+import org.IndiePapafritaCraft.ClasesRestantes.Mano;
 import org.IndiePapafritaCraft.ValoresJuntados.ValorDeMano;
 
 import java.util.ArrayList;

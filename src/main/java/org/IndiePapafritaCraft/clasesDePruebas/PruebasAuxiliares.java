@@ -1,8 +1,8 @@
 package org.IndiePapafritaCraft.clasesDePruebas;
 
-import org.IndiePapafritaCraft.ClasesDeLaCpu.JugadorMaquina;
-import org.IndiePapafritaCraft.Mano;
-import org.IndiePapafritaCraft.Mazo;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.JugadorMaquina;
+import org.IndiePapafritaCraft.ClasesRestantes.Mano;
+import org.IndiePapafritaCraft.ClasesRestantes.Mazo;
 
 public class PruebasAuxiliares {
     public static void ProbarErrores(JugadorMaquina j, int repeticiones, double toleracion){

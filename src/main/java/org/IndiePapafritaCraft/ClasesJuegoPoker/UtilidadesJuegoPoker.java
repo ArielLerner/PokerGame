@@ -1,7 +1,7 @@
 package org.IndiePapafritaCraft.ClasesJuegoPoker;
 
-import org.IndiePapafritaCraft.Jugador;
-import org.IndiePapafritaCraft.Mano;
+import org.IndiePapafritaCraft.ClasesDeJugador.Jugador;
+import org.IndiePapafritaCraft.ClasesRestantes.Mano;
 
 import java.util.ArrayList;
 

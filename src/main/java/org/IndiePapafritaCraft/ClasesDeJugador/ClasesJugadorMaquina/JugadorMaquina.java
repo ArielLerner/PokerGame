@@ -1,14 +1,17 @@
-package org.IndiePapafritaCraft.ClasesDeLaCpu;
+package org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina;
 
-import org.IndiePapafritaCraft.*;
-import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.*;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.EstadisticasDelJuegoPoker.Singleton;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.EstadisticasDelJuegoPoker.PartesDelJuego;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.utilidades.*;
+import org.IndiePapafritaCraft.ClasesDeJugador.Jugador;
 import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
+import org.IndiePapafritaCraft.ClasesRestantes.Mano;
 import org.IndiePapafritaCraft.ValoresJuntados.*;
 
 import java.util.ArrayList;
 
 public class JugadorMaquina extends Jugador {
-    public JugadorMaquina(Mano mano,int balanceInicial,  JuegoPoker juegoDePoker, String nombre) {
+    public JugadorMaquina(Mano mano, int balanceInicial, JuegoPoker juegoDePoker, String nombre) {
         super(juegoDePoker,mano,balanceInicial,nombre);
     }
 
@@ -23,10 +26,17 @@ public class JugadorMaquina extends Jugador {
     //Los metodos de aviso no necesitan ser implementados en la màquina
     public void pagarLuzAviso(){}
     public void repartirCartasAviso(){}
+
+    /**
+     * Para diferenciar si es la primera apuesta o la segunda apuesta voy a ver cual es la ParteDelJuego en la que esta
+     */
     public void jugadorVeApuestaAviso(Jugador x){}
-    public void cambioCartasAviso(){}
-    public void finalDelJuegoAviso(ArrayList<Mano> mostrarCartas, ArrayList<Jugador> jugadoresGanadores , int pozo){}
-    public void entreManosAviso(boolean seguirConElJuego){}
+    public void cambioCartasAviso(Jugador x, int cartasCambiadas){}
+    public void finalDelJuegoAviso(ArrayList<Mano> mostrarCartas, ArrayList<Jugador> jugadoresGanadores , int pozo){
+        Singleton.get(this).actualizacionFinDeMano(this);}
+    public void entreManosAviso(boolean seguirConElJuego){
+        Singleton.get(this).actualizacionEntreManos(seguirConElJuego,this);}
+    public TipoDeJugador claseDeJugador(){return TipoDeJugador.JUGADOR_DE_LA_MAQUINA;}
     /**
      *
      * @param toleracionDeEstrategiasPeores debe contener un valor entre 0 y 1 que es el margen que se tolera para elegir estrategias

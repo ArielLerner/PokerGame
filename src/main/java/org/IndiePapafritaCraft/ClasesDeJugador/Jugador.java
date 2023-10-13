@@ -1,6 +1,9 @@
-package org.IndiePapafritaCraft;
+package org.IndiePapafritaCraft.ClasesDeJugador;
 
+import org.IndiePapafritaCraft.ClasesRestantes.Carta;
 import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
+import org.IndiePapafritaCraft.ClasesRestantes.Mano;
+import org.IndiePapafritaCraft.ValoresJuntados.TipoDeJugador;
 
 import java.util.ArrayList;
 
@@ -34,7 +37,7 @@ public abstract class Jugador {
     /**
      * este metodo devuelve un aviso dsps de que un jugador haya usado el metodo verApuesta
      */
-    public abstract void cambioCartasAviso();
+    public abstract void cambioCartasAviso(Jugador x, int nroCartasCambiadas);
     public abstract void finalDelJuegoAviso(ArrayList<Mano> mostrarCartas, ArrayList<Jugador> jugadoresGanadores , int pozo);
     public abstract void entreManosAviso(boolean seguirConElJuego);
     //metodos normales
@@ -62,6 +65,7 @@ public abstract class Jugador {
     public void cambiarUnaCarta(int posicion, Carta carta){manoDeJugador.cambiarUnaCarta(posicion,carta);}
     public void setDineroApostadoEn0(){this.dineroApostado=0;}
     public void sumarXparaFinanzas(int x){finanzas=finanzas+x;}
+    public abstract TipoDeJugador claseDeJugador();
 
     /**
      * Descuenta de finanzas un nro y lo apuesta

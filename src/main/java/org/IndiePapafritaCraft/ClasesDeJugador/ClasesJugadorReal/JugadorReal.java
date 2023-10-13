@@ -1,9 +1,10 @@
-package org.IndiePapafritaCraft.ClasesJugadorReal;
+package org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorReal;
 
 import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
 import org.IndiePapafritaCraft.ClasesJuegoPoker.UtilidadesJuegoPoker;
-import org.IndiePapafritaCraft.Jugador;
-import org.IndiePapafritaCraft.Mano;
+import org.IndiePapafritaCraft.ClasesDeJugador.Jugador;
+import org.IndiePapafritaCraft.ClasesRestantes.Mano;
+import org.IndiePapafritaCraft.ValoresJuntados.TipoDeJugador;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -47,7 +48,7 @@ public class JugadorReal extends Jugador {
     }
 
     //Metodos no implementados
-    public void cambioCartasAviso() {
+    public void cambioCartasAviso(Jugador x, int cartasCambiadas) {
         Mano mano = this.getMano();
         System.out.println("Mano con cartas cambiadas: ");
         System.out.println(mano);
@@ -111,4 +112,5 @@ public class JugadorReal extends Jugador {
             }
         }
     }
+    public TipoDeJugador claseDeJugador(){return TipoDeJugador.JUGADOR_REAL;}
 }

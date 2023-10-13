@@ -1,9 +1,8 @@
 package org.IndiePapafritaCraft;
 
+import org.IndiePapafritaCraft.ClasesRestantes.Carta;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CartaTest {
     @Test

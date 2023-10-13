@@ -1,4 +1,4 @@
-package org.IndiePapafritaCraft;
+package org.IndiePapafritaCraft.ClasesRestantes;
 public class Carta {
     private final int numero;
     private final int palo;

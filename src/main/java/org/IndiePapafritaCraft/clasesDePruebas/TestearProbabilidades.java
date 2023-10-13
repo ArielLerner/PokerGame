@@ -1,7 +1,9 @@
 package org.IndiePapafritaCraft.clasesDePruebas;
 
-import org.IndiePapafritaCraft.*;
 import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
+import org.IndiePapafritaCraft.ClasesRestantes.Carta;
+import org.IndiePapafritaCraft.ClasesRestantes.Mano;
+import org.IndiePapafritaCraft.ClasesRestantes.Mazo;
 import org.IndiePapafritaCraft.ValoresJuntados.ValorDeMano;
 
 import java.io.BufferedWriter;

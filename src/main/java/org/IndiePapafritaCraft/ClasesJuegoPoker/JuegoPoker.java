@@ -1,30 +1,28 @@
 package org.IndiePapafritaCraft.ClasesJuegoPoker;
 
-import org.IndiePapafritaCraft.BalanceDeLaRonda;
-import org.IndiePapafritaCraft.ClasesDeLaCpu.JugadorMaquina;
-import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.EstadisticasDelJuegoPoker.DatosEstadisticos;
-import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.EstadisticasDelJuegoPoker.DatosParaApuesta;
-import org.IndiePapafritaCraft.ClasesJugadorReal.JugadorReal;
-import org.IndiePapafritaCraft.Jugador;
-import org.IndiePapafritaCraft.Mano;
-import org.IndiePapafritaCraft.Mazo;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.EstadisticasDelJuegoPoker.PartesDelJuego;
+import org.IndiePapafritaCraft.ClasesRestantes.BalanceDeLaRonda;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.JugadorMaquina;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorReal.JugadorReal;
+import org.IndiePapafritaCraft.ClasesDeJugador.Jugador;
+import org.IndiePapafritaCraft.ClasesRestantes.Mano;
+import org.IndiePapafritaCraft.ClasesRestantes.Mazo;
 import org.IndiePapafritaCraft.ValoresJuntados.TipoDeJugador;
 
 public class JuegoPoker {
     private Mazo mazo;
     private int precioDeLuz;
     private Jugador[] jugadores;
-
     private DatosMomentaneos datos;
+    private  int balanceInicial;
     public void jugar(){
         boolean seguirJugando = true;
         while (seguirJugando==true ){
-            PartesDelJuego.jugarMano(this);
-            DatosParaApuesta.singletonDatos().ActualizacionFinDeMano(seguirJugando);
+            UtilidadesPartesDelJuego.jugarMano(this);
             for (Jugador jugador : jugadores) jugador.entreManosAviso(seguirJugando);
         }
     }
-    public JuegoPoker(Mazo mazoDelJuego, int precioDeLuz2) {
+    public JuegoPoker(Mazo mazoDelJuego, int precioDeLuz2, int balanceInicial) {
         mazo = mazoDelJuego;
         precioDeLuz= precioDeLuz2;
         datos = new DatosMomentaneos(0,0);
@@ -43,7 +41,7 @@ public class JuegoPoker {
         int nroDeJugadores = tipoDeJugadores.length;
         String[] nombres  = UtilidadesJuegoPokerTerminal.scanNombreDeJugadores(nroDeJugadores);
         Mazo mazo1  = JuegoPoker.crearMazo(nroDeJugadores);
-        JuegoPoker juego = new JuegoPoker(mazo1,precioDeLuz);
+        JuegoPoker juego = new JuegoPoker(mazo1,precioDeLuz, nroDeBalanceInicial);
         //Hacer los jugadores
         Mano[] manos = juego.crearManosDeJugadores(nroDeJugadores);
         Jugador[] jugadores = juego.crearJugadores(nroDeJugadores,tipoDeJugadores,manos,nroDeBalanceInicial,nombres);
@@ -104,6 +102,9 @@ public class JuegoPoker {
     public DatosMomentaneos getDatos() {return datos;}
     public void setDatos(DatosMomentaneos datos) {this.datos = datos;}
     public Jugador getUltimoJugadorEnSubirApuesta(){return this.jugadores[datos.getIndexUltimoJugadorQueSubioApuesta()];}
+
+    public int getBalanceInicial() {return balanceInicial;}
+
     public int getMayorApuesta(){
         int apuestaMasAlta = jugadores[0].getDineroApostado();
         for (int x=1;x<jugadores.length;x++){
@@ -111,5 +112,8 @@ public class JuegoPoker {
                 apuestaMasAlta = jugadores[x].getDineroApostado();
         }
         return apuestaMasAlta;
+    }
+    public PartesDelJuego parteDelJuego(){
+        return this.getDatos().getParteDelJuego();
     }
 }

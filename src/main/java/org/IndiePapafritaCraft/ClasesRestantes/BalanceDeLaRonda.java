@@ -1,4 +1,4 @@
-package org.IndiePapafritaCraft;
+package org.IndiePapafritaCraft.ClasesRestantes;
 
 public class BalanceDeLaRonda {
     private int[] balanceDeLosJugadores;

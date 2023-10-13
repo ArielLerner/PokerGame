@@ -1,4 +1,4 @@
-package org.IndiePapafritaCraft.ClasesDeLaCpu;
+package org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina;
 
 import org.IndiePapafritaCraft.ValoresJuntados.FullProb;
 import org.IndiePapafritaCraft.ValoresJuntados.MapaFullProbs;

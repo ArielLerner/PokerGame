@@ -1,17 +1,20 @@
-package org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu;
+package org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu;
 
-import org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu.EstadisticasDelJuegoPoker.DatosParaApuesta;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.EstadisticasDelJuegoPoker.Singleton;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.EstadisticasDelJuegoPoker.PartesDelJuego;
 import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
-import org.IndiePapafritaCraft.Jugador;
+import org.IndiePapafritaCraft.ClasesDeJugador.Jugador;
+import org.IndiePapafritaCraft.ValoresJuntados.Estrategia;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class MetodosDeApuestas {
     public static double logaritmo(double base, double x) {
         return Math.log(x) / Math.log(base);
     }
     //Métodos de estimaciónDeRondas
-    public static double[] regresionCuadratica(double[][] puntos){
+    public static double[] regresionCuadratica(ArrayList<double[]> puntos){
         double[][] coeficientes = MetodosDeApuestas.crearMatrizRegCuadratica(puntos);
         double[] valoresDeVariables = MetodosDeApuestas.metodoDeCramer3x3(coeficientes);
         return valoresDeVariables;
@@ -26,8 +29,8 @@ public class MetodosDeApuestas {
     //a*Ex2 + b Ex + c*4 = Ey
     //a*Ex3 + b*Ex2 +c*Ex =Exy
     //a*Ex4 * b*Ex3 +c*Ex2 =Ex2y
-    private static double[][] crearMatrizRegCuadratica(double[][] puntos) {
-        double n = puntos.length;
+    private static double[][] crearMatrizRegCuadratica(ArrayList<double[]> puntos) {
+        double n = puntos.size();
         double Ex = MetodosDeApuestas.sumaDePotenciasPuntos(puntos, 1, 0);
         double Ey = MetodosDeApuestas.sumaDePotenciasPuntos(puntos, 0, 1);
         //E significa la suma de los puntos y x2 significa x al cuadrado , x3 significa x al cubo...
@@ -47,18 +50,40 @@ public class MetodosDeApuestas {
     }
 
     /**
+     * @param x es el jugador que REALIZA el metodo
+     */
+    public static int verApuesta(Jugador x, Jugador ultimoEnSubirApuesta, int apuestaMax){
+        PartesDelJuego parteDelJuego = x.getJuego().parteDelJuego();
+        int cantApostadaRival = ultimoEnSubirApuesta.getDineroApostado();
+        //caso 1 cantRival > ApuestaMax
+        if(cantApostadaRival > apuestaMax){
+
+        }
+        //casp 2 cantRival < apuesta Max
+        if (cantApostadaRival<apuestaMax){
+
+        }
+        //caso 3 cantRival == apuestaMax
+        if (cantApostadaRival == apuestaMax){
+            return apuestaMax;
+        }
+return 0;
+    }
+    private static void verApuestaCaso1(){}
+
+    /**
      * @param puntos    son los puntos(x,y), el primer array contiene los puntos y el segundo contiene en 0: la coordenada x y en 1: la coordenada y
      * @param potenciaX es el numero al que se eleva x
      * @param potenciaY es el nro al que se eleva y
      * @return devuelve la suma de las multiplicaciones de las potencias de x,y
      */
-    private static double sumaDePotenciasPuntos(double[][] puntos, int potenciaX, int potenciaY) {
-        int cantDePuntos = puntos.length;
+    private static double sumaDePotenciasPuntos(ArrayList<double[]> puntos, int potenciaX, int potenciaY) {
+        int cantDePuntos = puntos.size();
         double sumaTotal = 0;
         for (int a = 0; a < cantDePuntos; a++) {
             //voy a calcular x,y potenciados
-            double xFinal = Math.pow(puntos[a][0], potenciaX);
-            double yFinal = Math.pow(puntos[a][1], potenciaY);
+            double xFinal = Math.pow(puntos.get(a)[0], potenciaX);
+            double yFinal = Math.pow(puntos.get(a)[1], potenciaY);
             double nFinal = xFinal * yFinal;
             sumaTotal = sumaTotal + nFinal;
         }
@@ -113,10 +138,36 @@ public class MetodosDeApuestas {
         int estimacionDeRondas = (int) promedio;
         return estimacionDeRondas;
     }
+    public static int apuestaMax(PartesDelJuego parteDelJuego,Jugador x, Estrategia estrategia){
+        int apuestaMax=0;
+        if (parteDelJuego == PartesDelJuego.PRIMERAAPUESTA)
+            apuestaMax = MetodosDeApuestas.apuestaMax1eraApuesta(x, estrategia.getProbDeGanarObjetiva(), Singleton.get(x).estimacionDeRondas);
+        if (parteDelJuego == PartesDelJuego.SEGUNDAAPUESTA)
+            apuestaMax = MetodosDeApuestas.apuestaMax2daApuesta(x, estrategia.getProbDeGanarObjetiva(), Singleton.get(x).estimacionDeRondas);
+        return apuestaMax;
+    }
+
+    /**
+     * @return devuelve lo mismo que en apuestaMax2daRonda solo que se divide por 1/2 si apuestaMax>2*apuestaMin
+     */
+    private static int apuestaMax1eraApuesta(Jugador x, double probaDeGanar, int estimacionDeRondas){
+        int apuestaMax2daRonda = apuestaMax2daApuesta(x,probaDeGanar,estimacionDeRondas);
+        int apuestaMin  = apuestaMinima(x);
+        if ( apuestaMax2daRonda > 2 * apuestaMin) apuestaMax2daRonda = apuestaMax2daRonda / 2;
+        return  apuestaMax2daRonda;
+    }
+    private static int apuestaMax2daApuesta(Jugador x, double probDeGanar, int estimacionDeRondas){
+        double camax = camax(x.getJuego(),probDeGanar,estimacionDeRondas);
+        int apuestaMin = apuestaMinima(x);
+         int dineroTotal = x.getFinanzas();
+         int apuestaMax =  (int)(camax*dineroTotal);
+         if (apuestaMax < apuestaMin && apuestaMax < 20/100* x.getJuego().getBalanceInicial()) apuestaMax = apuestaMin;
+         return  apuestaMax;
+    }
 
     public static int apuestaMinima(Jugador x) {
         int dineroRestante = x.getFinanzas();
-        int rondasRestantes = DatosParaApuesta.singletonDatos().rondasRestantes;
+        int rondasRestantes = Singleton.get(x).rondasRestantes;
         int apuestaMinima = dineroRestante / rondasRestantes;
         //En caso de que la apuesta minima sea 0 hay que hacer a la maquina jugar entonces hacemos que sea 1 hasta que se quede sin plata
         if (apuestaMinima == 0 && dineroRestante > 0) apuestaMinima = 1;
@@ -131,7 +182,7 @@ public class MetodosDeApuestas {
      */
     public static void writerDeManosJugadas(int manosJugadas) {
         try {
-            String filepath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeLaCpu\\UtilidadesCpu\\EstadisticasDelJuegoPoker\\CantDeManosJugadasEn10UltimasPartidas.txt";
+            String filepath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeJugador\\ClasesJugadorMaquina\\UtilidadesCpu\\EstadisticasDelJuegoPoker\\Files\\DatosApuesta\\CantDeManosJugadasEn10UltimasPartidas.txt";
             String[] ultimasManos = MetodosDeApuestas.leerManosJugadasEnUltimasPartidas(filepath);
             //Hay que abrir el bufferedWriter dsps de leer ya que cuando se abre, se resetea el file
             BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
@@ -149,7 +200,73 @@ public class MetodosDeApuestas {
             System.out.println("Ha habido un error en MetodosDeApuestas : anotarCantManosJugadas " + x);
         }
     }
+    public static ArrayList<double[]> readerDePuntos(){
+        String filepath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeJugador\\ClasesJugadorMaquina\\UtilidadesCpu\\EstadisticasDelJuegoPoker\\Files\\DatosApuesta\\Puntos x,y Qrival y probDeGanarTotal";
+        String[] lectura = MetodosDeApuestas.leerRenglones(filepath);
+        //En este arraylist voy a tener cada punto como un double[]
+        ArrayList<double[]> puntos  =  new ArrayList<double[]>();
+        for (int a=0;a<(lectura.length/2);a++){
+            if (lectura[a*2] == null) continue;
+            else{
+                double x = Double.parseDouble(lectura[a*2]);
+                double y =  Double.parseDouble(lectura[a*2+1]);
+                puntos.add(new double[]{x,y});
+            }
+        }
+        return puntos;
+    }
 
+    /**
+     * @param cantApostada es la cant apostada por el rival
+     * @param probDeGanar es la prob de ganar rival (va de 0 a 100)
+     * Este metodo va a escrbir la cant apostada y la prob de ganar en renglones consecutivos en el file
+     *
+     */
+    public static void writerDePuntos(int cantApostada, double probDeGanar) {
+        try {
+            String filepath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeJugador\\ClasesJugadorMaquina\\UtilidadesCpu\\EstadisticasDelJuegoPoker\\Files\\DatosApuesta\\Puntos x,y Qrival y probDeGanarTotal";
+            String[] lectura = MetodosDeApuestas.leerRenglones(filepath);
+            //encontrar el primer renglon vacio
+            int primerRenglonVacio = 0;
+            for (int x = 0; x < lectura.length; x++) {
+                if (lectura[x].length() == 0) {primerRenglonVacio = x;break;}
+            }
+            //Nros de renglones vacio y de x,y
+            int renglonX= primerRenglonVacio;
+            int renglonY = primerRenglonVacio + 1;
+            int renglonVacio1 = primerRenglonVacio + 2;
+            int renglonVacio2 = primerRenglonVacio + 3;
+            //Si los renglones vacios se pasan de 29 los paso a 0 y 1
+            if (renglonVacio2>29){
+                renglonVacio1=0;
+                renglonVacio2=1;
+            }
+            //Reescribir el archivo con el nuevo punto y el nuevo espacio
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
+            for (int x = 0; x < lectura.length; x++) {
+                boolean r = false;
+                if (x == renglonX) {writer.write(cantApostada + "");writer.newLine();r = true;}
+                if (x == renglonY) {writer.write(probDeGanar + "");writer.newLine();r = true;}
+                if (x == renglonVacio1 || x ==  renglonVacio2) {writer.newLine();r = true;}
+                if (r != true){
+                    if (lectura[x]==null || lectura[x].isBlank());
+                    else  writer.write(lectura[x]);
+                    writer.newLine();}
+            }
+            writer.close();
+        } catch (Exception x) {
+            System.out.println("Ha habido un error en MetodosDeApuestas : writerDePuntos " + x);
+        }
+    }
+    private static String[] leerRenglones(String filepath){
+        String[] lectura = new String[60];
+        try {
+            BufferedReader lector = new BufferedReader(new FileReader(filepath));
+            for (int a = 0; a < 60; a++) {
+                lectura[a] = lector.readLine();
+            }
+        }catch (Exception x ){System.out.println("Ha habido un error en MetodosDeApuesta.LeerRenglones");}
+            return lectura; }
     /**
      * @return Devuelve un string array con los numeros en el filepath
      * @throws NumberFormatException El  método puede dar error si el el filepath al que hace referencia tiene una linea null entre el renglón 1 y 10

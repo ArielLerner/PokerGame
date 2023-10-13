@@ -1,6 +1,7 @@
-package org.IndiePapafritaCraft;
+package org.IndiePapafritaCraft.ClasesRestantes;
 
-import javax.print.DocFlavor;
+import org.IndiePapafritaCraft.ClasesRestantes.Carta;
+import org.IndiePapafritaCraft.ClasesRestantes.Mano;
 
 public class Mazo {
     private Carta[] mazo;

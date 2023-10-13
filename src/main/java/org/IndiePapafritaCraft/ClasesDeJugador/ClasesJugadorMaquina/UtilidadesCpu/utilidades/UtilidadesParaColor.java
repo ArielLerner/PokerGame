@@ -1,7 +1,7 @@
-package org.IndiePapafritaCraft.ClasesDeLaCpu.UtilidadesCpu;
+package org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.utilidades;
 
 import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
-import org.IndiePapafritaCraft.Mano;
+import org.IndiePapafritaCraft.ClasesRestantes.Mano;
 import org.IndiePapafritaCraft.ValoresJuntados.MapaFullProbs;
 import org.IndiePapafritaCraft.ValoresJuntados.ValorDeMano;
 import org.IndiePapafritaCraft.ValoresJuntados.ValorYProbabilidad;
