@@ -27,13 +27,14 @@ public class JuegoPoker {
         precioDeLuz= precioDeLuz2;
         datos = new DatosMomentaneos(0,0);
     }
+
     public void setJugadores(Jugador[] jugadores2){
         jugadores=jugadores2;
     }
     /**
      * @return Crea el juego , con el mazo, el balance de la ronda y los jugadores
      */
-    public static JuegoPoker crearJuegoTerminal(){
+    public static JuegoPoker crearJuegoTerminal(double toleracionEstrategias){
         //hacer el juego
         TipoDeJugador[] tipoDeJugadores = UtilidadesJuegoPokerTerminal.scanNroDeJugadores();
         int nroDeBalanceInicial = UtilidadesJuegoPokerTerminal.scanBalanceInicial();
@@ -44,7 +45,7 @@ public class JuegoPoker {
         JuegoPoker juego = new JuegoPoker(mazo1,precioDeLuz, nroDeBalanceInicial);
         //Hacer los jugadores
         Mano[] manos = juego.crearManosDeJugadores(nroDeJugadores);
-        Jugador[] jugadores = juego.crearJugadores(nroDeJugadores,tipoDeJugadores,manos,nroDeBalanceInicial,nombres);
+        Jugador[] jugadores = juego.crearJugadores(nroDeJugadores,tipoDeJugadores,manos,nroDeBalanceInicial,nombres,toleracionEstrategias);
         juego.setJugadores(jugadores);
         return juego;
     }
@@ -77,11 +78,11 @@ public class JuegoPoker {
     /**
      * crea el array de jugadores
      */
-    public Jugador[] crearJugadores(int nroDeJugadores, TipoDeJugador[] tipoDeJugadores, Mano[] manosDeJugadores ,int balanceInicial, String[] nombres){
+    public Jugador[] crearJugadores(int nroDeJugadores, TipoDeJugador[] tipoDeJugadores, Mano[] manosDeJugadores ,int balanceInicial, String[] nombres,double toleracionEstrategias){
         Jugador[] jugadores = new Jugador[nroDeJugadores];
         for (int posActual = 0; posActual < nroDeJugadores; posActual++) {
             if (tipoDeJugadores[posActual] == TipoDeJugador.JUGADOR_DE_LA_MAQUINA) {
-                jugadores[posActual] = new JugadorMaquina(manosDeJugadores[posActual],balanceInicial,this,nombres[posActual]);
+                jugadores[posActual] = new JugadorMaquina(manosDeJugadores[posActual],balanceInicial,this,nombres[posActual],toleracionEstrategias);
             }
             if (tipoDeJugadores[posActual] == TipoDeJugador.JUGADOR_REAL) {
                 jugadores[posActual] = new JugadorReal(manosDeJugadores[posActual],balanceInicial, this, nombres[posActual]);

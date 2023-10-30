@@ -53,7 +53,23 @@ public class SingletonDatos {
             double probDeGanar = mano.valorDeLaMano(juego.numeroMayorDelMazo(),false).getProbDeGanarUnaMano();
             double probDeGanarTotal = probDeGanar * juego.getJugadores().length-1;
             int apuestaRival = jReal.getDineroApostado();
-            MetodosDeApuestas.writerDePuntos(apuestaRival,probDeGanarTotal);
+            MetodosDeApuestas.writerDePuntos(apuestaRival,jReal,probDeGanarTotal);
         }
+    }
+
+    /**
+     *
+     * @return Devuele el ultimo jugador en subir la apuesta
+     */
+    public Jugador ultimoEnSubir(){
+        Jugador jugadorApuMasAlta = juego.getJugadores()[0];
+        int apuestaMasAlta = 0;
+        for (Jugador j : juego.getJugadores()){
+            if (j.getDineroApostado()>apuestaMasAlta){
+                apuestaMasAlta = j.getDineroApostado();
+                jugadorApuMasAlta = j;
+            }
+        }
+        return jugadorApuMasAlta;
     }
 }

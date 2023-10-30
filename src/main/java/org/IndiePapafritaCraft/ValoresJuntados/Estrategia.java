@@ -1,13 +1,18 @@
 package org.IndiePapafritaCraft.ValoresJuntados;
 
+import org.IndiePapafritaCraft.ClasesRestantes.Mano;
+
 public class Estrategia {
     private ValorYProbabilidad[] valoresYprobabilidades;
     private boolean[] cartasParaCambiar;
     private double probDeGanarObjetiva;
-    public Estrategia(ValorYProbabilidad[] relacionesEntreValorYProbabilidad,boolean[]cartasCambio,double probObjetivaDeGanar){
+    private Mano mano;
+    private int apuestaMax;
+    public Estrategia(ValorYProbabilidad[] relacionesEntreValorYProbabilidad, boolean[]cartasCambio, double probObjetivaDeGanar, Mano mano2, int apuestaMax){
         valoresYprobabilidades =relacionesEntreValorYProbabilidad;
         cartasParaCambiar=cartasCambio;
         probDeGanarObjetiva = probObjetivaDeGanar;
+        mano = mano2;
 
     }
     public String toString(){
@@ -33,5 +38,9 @@ public class Estrategia {
 
     public boolean[] getCartasParaCambiar() {
         return cartasParaCambiar;
+    }
+
+    public Mano getMano() {
+        return mano;
     }
 }

@@ -2,6 +2,7 @@ package org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina;
 
 import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.EstadisticasDelJuegoPoker.Singleton;
 import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.EstadisticasDelJuegoPoker.PartesDelJuego;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.MetodosDeApuestas;
 import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.utilidades.*;
 import org.IndiePapafritaCraft.ClasesDeJugador.Jugador;
 import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
@@ -11,16 +12,32 @@ import org.IndiePapafritaCraft.ValoresJuntados.*;
 import java.util.ArrayList;
 
 public class JugadorMaquina extends Jugador {
-    public JugadorMaquina(Mano mano, int balanceInicial, JuegoPoker juegoDePoker, String nombre) {
+    public JugadorMaquina(Mano mano, int balanceInicial, JuegoPoker juegoDePoker, String nombre, double toleracionDeEstrategia2) {
         super(juegoDePoker,mano,balanceInicial,nombre);
+        toleracionDeEstrategia = toleracionDeEstrategia2;
     }
+
+    /**
+     * La estrategia no empieza estando inicializada sino que se inicializa cuando se llama al metodo getEst
+     */
+     private Estrategia est;
+
+    public double getToleracionDeEstrategia() {
+        return toleracionDeEstrategia;
+    }
+
+    public void setToleracionDeEstrategia(double toleracionDeEstrategia) {
+        this.toleracionDeEstrategia = toleracionDeEstrategia;
+    }
+
+    private double toleracionDeEstrategia;
 
     public void verApuesta() {
-
+        int cantAsubir = MetodosDeApuestas.verApuesta(this,Singleton.get(this).ultimoEnSubir(),MetodosDeApuestas.apuestaMax(this));
+        this.dineroApostado = cantAsubir ;
     }
     public boolean[] cambioCartas(){
-        boolean[] x = new  boolean[]{false,false,false,false,false};
-        return x;
+        return est.getCartasParaCambiar();
     }
     public void cambiarMano (Mano x){manoDeJugador = x;}
     //Los metodos de aviso no necesitan ser implementados en la màquina
@@ -89,7 +106,7 @@ public class JugadorMaquina extends Jugador {
         ValorYProbabilidad[] probabilidades = UtilidadesParaColor.probabilidadColor(paloConMasCartas,conteoDePalos,juego, probs);
         boolean[] cambioCartas = UtilidadesParaColor.cambiarCartasParaColor(paloConMasCartas,manoDeJugador);
         double probDeGanar = probDeGanar(probabilidades);
-        return new Estrategia(probabilidades,cambioCartas,probDeGanar);
+        return new Estrategia(probabilidades,cambioCartas,probDeGanar,this.manoDeJugador,MetodosDeApuestas.apuestaMax(this));
     }
     public Estrategia estrategiaEscalera(MapaFullProbs probs) {
         int[] memorizarResultados = UtilidadesParaEscalera.memorizarResultadosDeCadaEscaleras(juego, manoDeJugador);
@@ -114,7 +131,7 @@ public class JugadorMaquina extends Jugador {
             }
         }
         double probDeGanar = probDeGanar(probsFinales);
-        return new Estrategia(probsFinales, cambioCartasFinal,probDeGanar);
+        return new Estrategia(probsFinales, cambioCartasFinal,probDeGanar,this.manoDeJugador, MetodosDeApuestas.apuestaMax(this));
     }
     public Estrategia estrategiaParDoble(MapaFullProbs probs){
         boolean[] indexesDeNumerosRepetidos = UtilidadesGenerales.IndexDeNumerosQueSeRepiten(manoDeJugador);
@@ -124,7 +141,7 @@ public class JugadorMaquina extends Jugador {
         ValorYProbabilidad[] valoresYprob = UtilidadesParDoble.probabilidadesParDoble
                 (nroDeParesOPiernas, juego.numeroMayorDelMazo(),cambioCartas,indexDeCartaMasGrandeSobrante,manoDeJugador,probs.mapa.get(ValorDeMano.DOBLEPAR));
         double probDeGanar = probDeGanar(valoresYprob);
-        return new Estrategia(valoresYprob,cambioCartas,probDeGanar);
+        return new Estrategia(valoresYprob,cambioCartas,probDeGanar,this.manoDeJugador,MetodosDeApuestas.apuestaMax(this));
     }
     public Estrategia estrategiaParPiernaPoker(MapaFullProbs probs){
         boolean[]cambioCartas = UtilidadesParaParPiernaPoker.cambiarCartasParaPoker(manoDeJugador);
@@ -132,7 +149,7 @@ public class JugadorMaquina extends Jugador {
                 FullProb[]  fullProb = probs.mapa.get(ValorDeMano.POKER);
                 ValorYProbabilidad[] valorYprob  = fullProb[nroCartIguales-1].getProb();
         double probDeGanar = probDeGanar(valorYprob);
-        return new Estrategia(valorYprob,cambioCartas,probDeGanar);
+        return new Estrategia(valorYprob,cambioCartas,probDeGanar,this.manoDeJugador,MetodosDeApuestas.apuestaMax(this));
     }
     public Estrategia estrategiaServida(){
         double probabilidad = 1.0;
@@ -144,7 +161,11 @@ public class JugadorMaquina extends Jugador {
         }
         ValorYProbabilidad[] x = new ValorYProbabilidad[] { new ValorYProbabilidad(probabilidad,valor )};
         double probDeGanar = probDeGanar(x);
-        return new Estrategia(x,cambioCartas,probDeGanar);
+        return new Estrategia(x,cambioCartas,probDeGanar,this.manoDeJugador,MetodosDeApuestas.apuestaMax(this));
+    }
+    public Estrategia getEst(){
+        if (this.est == null || est.getMano() == this.manoDeJugador) {est = this.elegirEstrategia(toleracionDeEstrategia);}
+        return est;
     }
 }
 
