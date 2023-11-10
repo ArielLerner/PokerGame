@@ -1,19 +1,22 @@
 package org.IndiePapafritaCraft.ClasesRestantes;
+
 public class Carta {
     private final int numero;
     private final int palo;
     public Carta(int numeroDeCarta,int paloDeCarta){
         if (numeroDeCarta>12 || paloDeCarta>3){
-            System.out.println("el creador de Cartas escribió una carta inválida");
+            System.out.println("el creador de Cartas escribiÃ³ una carta invÃ¡lida");
         }
         numero=numeroDeCarta;
         palo=paloDeCarta;
     }
     /**
-    Pasa un objeto de la clase Carta a string
+     Pasa un objeto de la clase Carta a string
      */
+    String palos[] = {"T","P","C","D"};
+
     public  String toString(){
-        return "N:"+ this.numero+" "+"P:"+ this.palo;
+        return ""+ this.numero+" "+ palos[this.palo];
     }
     /**
      devuelve el numero de la carta

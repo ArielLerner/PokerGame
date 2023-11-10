@@ -1,7 +1,5 @@
 package org.IndiePapafritaCraft.ClasesJuegoPoker;
 
-import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.EstadisticasDelJuegoPoker.PartesDelJuego;
-
 public class DatosMomentaneos {
     // Es una clase para que el juego guarde ciertos datos pero no está constantemente actualizada
     // asi que no usarla para metodos del jugador
@@ -10,7 +8,17 @@ public class DatosMomentaneos {
     private int indexUltimoJugadorQueSubioApuesta;
     private PartesDelJuego parteDelJuego;
 
-    public DatosMomentaneos (int indexDeMano,int indexDelUltimoQueSubio){
+    public void setBalanceInicial(int balanceInicial) {
+        this.balanceInicial = balanceInicial;
+    }
+
+    public int getBalanceInicial() {
+        return balanceInicial;
+    }
+
+    private int balanceInicial; //Es el balance con el que empiezan los jugadores
+
+    public DatosMomentaneos(int indexDeMano, int indexDelUltimoQueSubio) {
         indexMano = indexDeMano;
         indexUltimoJugadorQueSubioApuesta = indexDelUltimoQueSubio;
     }
@@ -23,7 +31,9 @@ public class DatosMomentaneos {
         this.indexMano = indexMano;
     }
 
-    public int getIndexUltimoJugadorQueSubioApuesta() {return indexUltimoJugadorQueSubioApuesta;}
+    public int getIndexUltimoJugadorQueSubioApuesta() {
+        return indexUltimoJugadorQueSubioApuesta;
+    }
 
 
     public int getIndexMano() {
@@ -35,7 +45,7 @@ public class DatosMomentaneos {
     }
 
     public PartesDelJuego getParteDelJuego() {
-       if (parteDelJuego==null) return PartesDelJuego.PAGODELUZ;
+        if (parteDelJuego == null) return PartesDelJuego.PAGODELUZ;
         return parteDelJuego;
     }
 }

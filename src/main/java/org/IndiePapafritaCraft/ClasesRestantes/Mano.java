@@ -35,7 +35,9 @@ public class Mano {
     public String toString() {
         String a = "";
         for (int x = 0; x < 5; x++) {
-            a = a + "C" + (x) + ": " + this.mano[x].toString() + "  ";
+            // a = a + "C" + (x) + ": " + this.mano[x].toString() + "  ";
+            a = a + this.mano[x].toString() + "  ";
+
         }
         return a;
     }
@@ -201,34 +203,34 @@ public class Mano {
      * @return si devuelve 2 es full, si devuelve 1 es par doble, si devuelve 0 no es nada
      */
     private int ParDobleFull( boolean[] nrosRepetidos){
-         int nroDeParesPíernasOpoker = UtilidadesGenerales.nroDeParesPiernasPokerQueHayEnLaMano(this, nrosRepetidos);
-         if (nroDeParesPíernasOpoker==2){
-             int contador=0;
-             for (int x=0;x<5;x++){
-                 if (nrosRepetidos[x]==true){
-                     contador++;
-                 }
-             }
-             switch (contador){
-                 case 4: return 1;
-                 case 5: return 2;
-                 default:
-                     System.out.println("ha habido un error en el método que decide el valor de la mano");
-                     return -1;
-             }
-         }
-         else return 0;
+        int nroDeParesPiernaPoker = UtilidadesGenerales.nroDeParesPiernasPokerQueHayEnLaMano(this,nrosRepetidos);
+        if (nroDeParesPiernaPoker==2){
+            int contador=0;
+            for (int x=0;x<5;x++){
+                if (nrosRepetidos[x]==true){
+                    contador++;
+                }
+            }
+            switch (contador){
+                case 4: return 1;
+                case 5: return 2;
+                default:
+                    System.out.println("ha habido un error en el mÃ©todo que decide el valor de la mano");
+                    return -1;
+            }
+        }
+        else return 0;
     }
 
     /**
      * @return devuelve la cantDeCartasIguales
      */
     private int cantDeCartasIguales( boolean[] indexesNrosRepetidos){
-       int contador=0;
+        int contador=0;
         for (int x=0;x<5;x++){
-           if (indexesNrosRepetidos[x]== true){
-               contador++;
-           }
+            if (indexesNrosRepetidos[x]== true){
+                contador++;
+            }
         }
         return contador;
     }

@@ -13,7 +13,7 @@ public class LeerProbs {
     public static MapaFullProbs leerProbGenerales(int cantDeCartasDelMazo) {
         HashMap<ValorDeMano, FullProb[]> posibilidadesGenerales = new HashMap<>();
         try {
-            String filePath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeLaCpu\\probabilidades\\52CartasProbs";
+            String filePath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeJugador\\ClasesJugadorMaquina\\UtilidadesCpu\\EstadisticasDelJuegoPoker\\Files\\probsEstrategia\\52CartasProbs";
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             String line = reader.readLine();
             while (LeerProbs.stringConNada(line) == false) {
@@ -24,13 +24,13 @@ public class LeerProbs {
                 line = reader.readLine();
             }
         } catch (IOException x) {
-            System.out.println("Ha habido un error en lector de posibilidades");
+            System.out.println("Ha habido un error en lector de posibilidades" + x);
         }
         return new MapaFullProbs(posibilidadesGenerales);
     }
 
     /**
-     * @return Devuelve true si el string esta null o está lleno de espacios
+     * @return Devuelve true si el string esta null o estÃ¡ lleno de espacios
      */
     private static boolean stringConNada(String x) {
         if (x == null) {

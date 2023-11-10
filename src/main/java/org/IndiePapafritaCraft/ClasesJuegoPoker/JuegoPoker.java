@@ -1,40 +1,43 @@
 package org.IndiePapafritaCraft.ClasesJuegoPoker;
 
-import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.EstadisticasDelJuegoPoker.PartesDelJuego;
-import org.IndiePapafritaCraft.ClasesRestantes.BalanceDeLaRonda;
-import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.JugadorMaquina;
-import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorReal.JugadorReal;
 import org.IndiePapafritaCraft.ClasesDeJugador.Jugador;
-import org.IndiePapafritaCraft.ClasesRestantes.Mano;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.JugadorMaquina;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.ClasesJugadorReal.JugadorReal;
+import org.IndiePapafritaCraft.ClasesRestantes.BalanceDeLaRonda;
 import org.IndiePapafritaCraft.ClasesRestantes.Mazo;
+import org.IndiePapafritaCraft.ClasesRestantes.Mano;
 import org.IndiePapafritaCraft.ValoresJuntados.TipoDeJugador;
 
 public class JuegoPoker {
     private Mazo mazo;
     private int precioDeLuz;
     private Jugador[] jugadores;
+
     private DatosMomentaneos datos;
+
     private  int balanceInicial;
-    public void jugar(){
-        boolean seguirJugando = true;
-        while (seguirJugando==true ){
+    public void jugar() {
+        boolean[] seguirJugando = {true}; // tengo que usar un array para cuando lo pase como metodo lo pueda modificar
+        while (seguirJugando[0] == true) {
             UtilidadesPartesDelJuego.jugarMano(this);
-            for (Jugador jugador : jugadores) jugador.entreManosAviso(seguirJugando);
+            for (int x = 0; x < jugadores.length; x++) {
+                jugadores[x].entreManosAviso(seguirJugando);
+            }
         }
+        System.out.println("Fin Del Juego");
     }
     public JuegoPoker(Mazo mazoDelJuego, int precioDeLuz2, int balanceInicial) {
         mazo = mazoDelJuego;
         precioDeLuz= precioDeLuz2;
         datos = new DatosMomentaneos(0,0);
     }
-
     public void setJugadores(Jugador[] jugadores2){
         jugadores=jugadores2;
     }
     /**
      * @return Crea el juego , con el mazo, el balance de la ronda y los jugadores
      */
-    public static JuegoPoker crearJuegoTerminal(double toleracionEstrategias){
+    public static JuegoPoker crearJuegoTerminal(double toleracionDeEstrategia){
         //hacer el juego
         TipoDeJugador[] tipoDeJugadores = UtilidadesJuegoPokerTerminal.scanNroDeJugadores();
         int nroDeBalanceInicial = UtilidadesJuegoPokerTerminal.scanBalanceInicial();
@@ -42,11 +45,21 @@ public class JuegoPoker {
         int nroDeJugadores = tipoDeJugadores.length;
         String[] nombres  = UtilidadesJuegoPokerTerminal.scanNombreDeJugadores(nroDeJugadores);
         Mazo mazo1  = JuegoPoker.crearMazo(nroDeJugadores);
-        JuegoPoker juego = new JuegoPoker(mazo1,precioDeLuz, nroDeBalanceInicial);
+        JuegoPoker juego = new JuegoPoker(mazo1,precioDeLuz,nroDeBalanceInicial);
         //Hacer los jugadores
         Mano[] manos = juego.crearManosDeJugadores(nroDeJugadores);
-        Jugador[] jugadores = juego.crearJugadores(nroDeJugadores,tipoDeJugadores,manos,nroDeBalanceInicial,nombres,toleracionEstrategias);
+        Jugador[] jugadores = juego.crearJugadores(nroDeJugadores,tipoDeJugadores,manos,nroDeBalanceInicial,nombres, toleracionDeEstrategia);
         juego.setJugadores(jugadores);
+        juego.getDatos().setBalanceInicial(nroDeBalanceInicial); //Establece el balance inicial de un jugador
+        return juego;
+    }
+    public static JuegoPoker crearJuegoPorArgumentos(int balanceInicial, int precioLuz, TipoDeJugador[] tipoDeJugadores, String[] nombres,double toleracionEstrategias) {
+        int nroDeJugadores = nombres.length;
+        Mazo mazo1 = JuegoPoker.crearMazo(nroDeJugadores);
+        JuegoPoker juego = new JuegoPoker(mazo1, precioLuz, balanceInicial);
+        Mano[] manos = juego.crearManosDeJugadores(nroDeJugadores);
+        Jugador [] jugador = juego.crearJugadores(nroDeJugadores, tipoDeJugadores, manos, balanceInicial,nombres,toleracionEstrategias );
+        juego.setJugadores(jugador);
         return juego;
     }
 
@@ -78,7 +91,8 @@ public class JuegoPoker {
     /**
      * crea el array de jugadores
      */
-    public Jugador[] crearJugadores(int nroDeJugadores, TipoDeJugador[] tipoDeJugadores, Mano[] manosDeJugadores ,int balanceInicial, String[] nombres,double toleracionEstrategias){
+
+    public Jugador[] crearJugadores(int nroDeJugadores, TipoDeJugador[] tipoDeJugadores, Mano[] manosDeJugadores , int balanceInicial, String[] nombres, double toleracionEstrategias){
         Jugador[] jugadores = new Jugador[nroDeJugadores];
         for (int posActual = 0; posActual < nroDeJugadores; posActual++) {
             if (tipoDeJugadores[posActual] == TipoDeJugador.JUGADOR_DE_LA_MAQUINA) {
@@ -91,6 +105,17 @@ public class JuegoPoker {
         return jugadores;
     }
 
+    /**
+     * @return devuelve el nro de jug con EstarEnElJuego en true
+     */
+
+    public int jugQueSiguenEnElJuego(){
+        int contador=0;
+        for (Jugador j: jugadores){
+            if (j.getEstarEnElJuego()==true) contador++;
+        }
+        return contador;
+    }
     public int numeroMayorDelMazo() {return mazo.numeroMayor();}
     public int numeroMenorDelMazo() {return mazo.numeroMenor();}
     public int cantDeNumerosDelMazo() {return mazo.getMazo().length / 4;}
@@ -103,9 +128,6 @@ public class JuegoPoker {
     public DatosMomentaneos getDatos() {return datos;}
     public void setDatos(DatosMomentaneos datos) {this.datos = datos;}
     public Jugador getUltimoJugadorEnSubirApuesta(){return this.jugadores[datos.getIndexUltimoJugadorQueSubioApuesta()];}
-
-    public int getBalanceInicial() {return balanceInicial;}
-
     public int getMayorApuesta(){
         int apuestaMasAlta = jugadores[0].getDineroApostado();
         for (int x=1;x<jugadores.length;x++){
@@ -114,7 +136,5 @@ public class JuegoPoker {
         }
         return apuestaMasAlta;
     }
-    public PartesDelJuego parteDelJuego(){
-        return this.getDatos().getParteDelJuego();
-    }
 }
+

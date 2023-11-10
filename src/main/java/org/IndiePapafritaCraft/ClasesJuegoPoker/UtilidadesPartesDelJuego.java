@@ -1,11 +1,9 @@
 package org.IndiePapafritaCraft.ClasesJuegoPoker;
-
-import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.EstadisticasDelJuegoPoker.PartesDelJuego;
-import org.IndiePapafritaCraft.ClasesRestantes.Carta;
 import org.IndiePapafritaCraft.ClasesDeJugador.Jugador;
+import org.IndiePapafritaCraft.ClasesRestantes.Carta;
 import org.IndiePapafritaCraft.ClasesRestantes.Mano;
 import org.IndiePapafritaCraft.ClasesRestantes.Mazo;
-
+import org.IndiePapafritaCraft.ClasesJuegoPoker.PartesDelJuego;
 import java.util.ArrayList;
 
 public class UtilidadesPartesDelJuego {
@@ -22,12 +20,13 @@ public class UtilidadesPartesDelJuego {
      * Este metodo hace pagar la luz a los jugadores para que estenEnElJuego
      */
     public static void pagoDeLuz(JuegoPoker juego) {
-        juego.getDatos().setParteDelJuego(PartesDelJuego.PAGODELUZ);
         Jugador[] jugadores = juego.getJugadores();
         int precioDeLuz = juego.getPrecioDeLuz();
-        for (int x = 0; x < jugadores.length; x++) {
+        int jugQpaganLuz=0; // chequear si un solo jugador pago la luz
+        for (int x = 0; x < jugadores.length; x++) { //pago de luz
             if (jugadores[x].getFinanzas() >= precioDeLuz) {
                 jugadores[x].pagarLaLuz(precioDeLuz);
+                jugQpaganLuz ++;
             } else {
                 jugadores[x].setEstarEnElJuegoFalse();
             }
@@ -37,6 +36,8 @@ public class UtilidadesPartesDelJuego {
     }
 
     public static void repartirCartas(JuegoPoker juego) {
+
+        if (juego.jugQueSiguenEnElJuego()==0 || juego.jugQueSiguenEnElJuego()==1) return; //caso en el que no hay jugadores o hay 1
         juego.getDatos().setParteDelJuego(PartesDelJuego.REPARTIRCARTAS);
         Mazo mazo = juego.getMazo();
         mazo.mezclar();
@@ -55,16 +56,18 @@ public class UtilidadesPartesDelJuego {
      * @param juego
      */
     public static void primeraApuesta(JuegoPoker juego, int indexDeMano) {
+        if (juego.jugQueSiguenEnElJuego()==0 || juego.jugQueSiguenEnElJuego()==1) return; //caso en el que no hay jugadores o hay uno
         juego.getDatos().setParteDelJuego(PartesDelJuego.PRIMERAAPUESTA);
         Jugador[] jugadores = juego.getJugadores();
         int ultimoJugadorQueSubio = UtilidadesJuegoPoker.Apuesta(juego,indexDeMano);
-        //se guarda el ultimo que subio la apuesta, quien comienza la segunda apuesta
+        //se guarda el ultimo que subio la apuesta, puede ser -1 si no hay jugadores en el juego
         DatosMomentaneos datos = juego.getDatos();
         datos.setIndexUltimoJugadorQueSubioApuesta(ultimoJugadorQueSubio);
         juego.setDatos(datos);
     }
 
     public static void cambioCartas(JuegoPoker juego, int indexDeLaMano) {
+        if (juego.jugQueSiguenEnElJuego()==0 || juego.jugQueSiguenEnElJuego()==1) return; //caso en el que no hay jugadores o hay 1
         juego.getDatos().setParteDelJuego(PartesDelJuego.CAMBIOCARTAS);
         Jugador[] jugadores = juego.getJugadores();
         for (int x = 0; x < jugadores.length; x++) {
@@ -78,20 +81,22 @@ public class UtilidadesPartesDelJuego {
                         cartaParaSacar++;
                     }
                 }
-                for (Jugador jug: jugadores) jug.cambioCartasAviso(jugadores[x],cartaParaSacar );
             }
         }
     }
 
     public static void segundaApuesta(JuegoPoker juego) {
+        if (juego.jugQueSiguenEnElJuego()==0 || juego.jugQueSiguenEnElJuego()==1) return; //caso en el que no hay jugadores o hay 1
         juego.getDatos().setParteDelJuego(PartesDelJuego.SEGUNDAAPUESTA);
         Jugador[] jugadores = juego.getJugadores();
         int manoDeApuesta = UtilidadesJuegoPoker.buscarIndexDePrimerJugadorEnElJuego(jugadores, juego.getDatos().getIndexUltimoJugadorQueSubioApuesta());
-        int ultimoJugadorQueSubio = UtilidadesJuegoPoker.Apuesta(juego, manoDeApuesta);
-        //Se guarda el último que subio la apuesta
-        DatosMomentaneos datos = juego.getDatos();
-        datos.setIndexUltimoJugadorQueSubioApuesta(ultimoJugadorQueSubio);
-        juego.setDatos(datos);
+        { //caso: si no hay jugadores en el juego
+            int ultimoJugadorQueSubio = UtilidadesJuegoPoker.Apuesta(juego, manoDeApuesta);
+            //Se guarda el Ãºltimo que subio la apuesta
+            DatosMomentaneos datos = juego.getDatos();
+            datos.setIndexUltimoJugadorQueSubioApuesta(ultimoJugadorQueSubio);
+            juego.setDatos(datos);
+        }
     }
 
     /**
@@ -99,12 +104,11 @@ public class UtilidadesPartesDelJuego {
      * se le da a cada jugador el mismo nro y lo que falta por repartir se lo queda el jugador mas cercano a la posicion 0 del array[] jugadores
      */
     public static void finalDelJuego(JuegoPoker juego) {
-        juego.getDatos().setParteDelJuego(PartesDelJuego.FINALDELJUEGO); //Buscar las manos ganadoras
-        Jugador[] jugadores = juego.getJugadores();
+        if (juego.jugQueSiguenEnElJuego()==0 ) return; //caso en el que no hay jugadores o hay 1
+        Jugador[] jugadores = juego.getJugadores();//Buscar las manos ganadoras
         ArrayList<Mano> mostrarCartas = UtilidadesJuegoPoker.hacerArrayDeMostrarCartas(juego);
         ArrayList<Mano> manosGanadoras = ComparacionDeManos.mejoresManos(mostrarCartas, juego.numeroMayorDelMazo());
-        int pozo = UtilidadesJuegoPoker.calcularPozo(juego.getJugadores()); // acá empieza el calculo del pozo y la distribucion
-        UtilidadesJuegoPoker.dineroApostadoEn0(juego.getJugadores());
+        int pozo = UtilidadesJuegoPoker.calcularPozo(juego.getJugadores()); // acÃ¡ empieza el calculo del pozo y la distribucion
         // para no tener que distribuir numeros con coma voy a darle el resto del empate al mas cercano de los ganadores a la mano
         int baseParaCadaUno = pozo / manosGanadoras.size();
         int restoParaPrimerGanador = pozo - (baseParaCadaUno * manosGanadoras.size());
@@ -113,13 +117,14 @@ public class UtilidadesPartesDelJuego {
         for (int x = 0; x < manosGanadoras.size(); x++) {
             jugadoresGanadores.add(UtilidadesJuegoPoker.buscarJugador(manosGanadoras.get(x), jugadores));
         }
+        //FinalDeJuegoAviso
+        for (Jugador jugador : jugadores)  jugador.finalDelJuegoAviso(mostrarCartas,jugadoresGanadores,pozo);
         // le sumo a cada ganador lo que le corresponde
         for (int x = 0; x < jugadoresGanadores.size(); x++) {
             jugadoresGanadores.get(x).sumarXparaFinanzas(baseParaCadaUno);
             if (x == 0 && jugadoresGanadores.size() > 1)
                 jugadoresGanadores.get(x).sumarXparaFinanzas(restoParaPrimerGanador);
         }
-        //FinalDeJuegoAviso
-        for (Jugador jugador : jugadores)  jugador.finalDelJuegoAviso(mostrarCartas,jugadoresGanadores,pozo);
+        UtilidadesJuegoPoker.dineroApostadoEn0(juego.getJugadores());
     }
 }

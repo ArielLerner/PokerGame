@@ -7,6 +7,8 @@ import org.IndiePapafritaCraft.ValoresJuntados.TipoDeJugador;
 
 import java.util.ArrayList;
 
+
+
 public abstract class Jugador {
     protected JuegoPoker juego;
     protected Mano manoDeJugador;
@@ -24,9 +26,9 @@ public abstract class Jugador {
         nombre = nombreDelJugador;
 
     }
-  public abstract  void  verApuesta();
+    public abstract  void  verApuesta();
     public abstract boolean[] cambioCartas();
-    //Métodos de aviso // son metodos que le permiten al jugador pedir informacion uando pasa algo en el juego // el nombre refiere al momento del juego
+    //MÃ©todos de aviso // son metodos que le permiten al jugador pedir informacion uando pasa algo en el juego // el nombre refiere al momento del juego
     // sirven prioritariamente para mostrar la interfase de los jugadores reales
     public abstract void pagarLuzAviso();
     public abstract void repartirCartasAviso();
@@ -37,9 +39,9 @@ public abstract class Jugador {
     /**
      * este metodo devuelve un aviso dsps de que un jugador haya usado el metodo verApuesta
      */
-    public abstract void cambioCartasAviso(Jugador x, int nroCartasCambiadas);
+    public abstract void cambioCartasAviso(Jugador x , int cartasCambiadas);
     public abstract void finalDelJuegoAviso(ArrayList<Mano> mostrarCartas, ArrayList<Jugador> jugadoresGanadores , int pozo);
-    public abstract void entreManosAviso(boolean seguirConElJuego);
+    public abstract void entreManosAviso(boolean[] seguirConElJuego);
     //metodos normales
     public Mano getMano() {return manoDeJugador;}
     public void DarMano(Mano manoDeJugador2){
@@ -65,21 +67,21 @@ public abstract class Jugador {
     public void cambiarUnaCarta(int posicion, Carta carta){manoDeJugador.cambiarUnaCarta(posicion,carta);}
     public void setDineroApostadoEn0(){this.dineroApostado=0;}
     public void sumarXparaFinanzas(int x){finanzas=finanzas+x;}
-    public abstract TipoDeJugador claseDeJugador();
 
     /**
-     * Descuenta de finanzas un nro y lo apuesta
+     * Sube la apuesta a X|1
      */
-    public void apostarXcant(int x){
-        this.restarXaLasFinanzas(x);
-        this.sumarXalDineroApostado(x);
+    public void apostarXcantidad(int x){
+        int nuevoDineroApostado = x - this.dineroApostado;
+        this.restarXaLasFinanzas(nuevoDineroApostado);
+        this.sumarXalDineroApostado(nuevoDineroApostado);
     }
 
     /**
      * Este metodo apuesta la luz y deja en true el boolean estarEnElJuego
      */
     public void pagarLaLuz(int precioDeLaLuz){
-        this.apostarXcant(precioDeLaLuz);
+        this.apostarXcantidad(precioDeLaLuz);
         this.estarEnElJuego=true;
     }
 
@@ -109,4 +111,6 @@ public abstract class Jugador {
     public String getNombre() {
         return nombre;
     }
+
+    public abstract TipoDeJugador claseDeJugador();
 }

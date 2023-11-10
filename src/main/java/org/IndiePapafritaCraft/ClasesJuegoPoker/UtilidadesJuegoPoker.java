@@ -7,29 +7,32 @@ import java.util.ArrayList;
 
 public class UtilidadesJuegoPoker {
     /**
-     * @param indexMano es el jugador que le tocaría ser primero pero si decidió no jugar la mano entonces puede ser otro
-     * @return devuelve el index del ultimo jugador en subir
+     * @param indexMano es el jugador que le tocarÃ­a ser primero pero si decidiÃ³ no jugar la mano entonces puede ser otro
+     * @return devuelve el index del ultimo jugador en subir, si no hay ningun jugador en el juego, devuelve -1
      */
-    public static int Apuesta(JuegoPoker juego, int indexMano){
+    public static int Apuesta(JuegoPoker juego, int indexMano) {
         Jugador[] jugadores = juego.getJugadores();
         int indexPrimerJugadorEnElJuego = UtilidadesJuegoPoker.buscarIndexDePrimerJugadorEnElJuego(jugadores, indexMano);
-        jugadores[indexMano].verApuesta();
-        //avisoVerApuesta
-        for (Jugador jugador : jugadores )
-            jugador.jugadorVeApuestaAviso(jugadores[indexMano]);
-
-        int ultimoJugadorQueSubio = UtilidadesJuegoPoker.modeloDeApuestaGeneral(indexMano, jugadores);
+        int ultimoJugadorQueSubio = -1;
+        if (juego.jugQueSiguenEnElJuego() != 0)// chequea que haya por lo menos un jugador
+        {
+            jugadores[indexPrimerJugadorEnElJuego].verApuesta();
+            for (Jugador jugador : jugadores) //avisoVerApuesta
+                jugador.jugadorVeApuestaAviso(jugadores[indexMano]);
+            ultimoJugadorQueSubio = modeloDeApuesta(indexPrimerJugadorEnElJuego,juego,jugadores);
+        }
         return ultimoJugadorQueSubio;
     }
 
     /**
-     * Este método permite seguir la apuesta a partir de que un jugador la suba  o vaya dsps del primero
+     * Este mÃ©todo estÃ¡ obsoleta
      * @return devuelve el index del ultimo jugador que subio la apuesta
+     *
      */
-    public static int modeloDeApuestaGeneral(int indexUltimoJugadorQueSubioApuesta, Jugador[] jugadores) {
+    public static int modeloDeApuestaGeneral(int indexJugadorAnterior, JuegoPoker juego , Jugador[] jugadores) {
+        System.out.println("Se estÃ¡ usando un metodo obsoleto");
         boolean terminoLaApuesta = false;
-        while (terminoLaApuesta == false) {
-            int indexJugadorAnterior = indexUltimoJugadorQueSubioApuesta;
+        while (terminoLaApuesta == false) { //Este while chequea cuando se pasan suficientes turnos sin subir para que termine la apuesta
             int nroDeJugQueNoSuben = 0;
             for (int x = 0; x < (jugadores.length - 1); x++) {
                 int indexJugadorActual = indexDeJugadorSiguiente(indexJugadorAnterior, jugadores);
@@ -38,8 +41,10 @@ public class UtilidadesJuegoPoker {
                     //avisoVeApuesta
                     for (Jugador jugador : jugadores )
                         jugador.jugadorVeApuestaAviso(jugadores[indexJugadorActual]);
-                    if (seSubioLaApuesta(jugadores, indexJugadorActual) == true) {
-                        indexUltimoJugadorQueSubioApuesta = indexJugadorActual;
+                    if (seSubioLaApuesta(jugadores[indexJugadorActual],jugadores) ) {
+                        indexJugadorAnterior = indexJugadorActual;
+                        indexJugadorAnterior = indexJugadorAnterior;
+                        nroDeJugQueNoSuben = 0;
                         break;
                     } else {
                         nroDeJugQueNoSuben++;
@@ -49,15 +54,51 @@ public class UtilidadesJuegoPoker {
                 indexJugadorAnterior = indexJugadorActual;
                 continue;
             }
-            if (nroDeJugQueNoSuben == jugadores.length - 1) {
+            if (nroDeJugQueNoSuben == juego.jugQueSiguenEnElJuego()-1 )  { //chequeo si termino la apuesta
                 terminoLaApuesta = true;
             }
         }
-        return indexUltimoJugadorQueSubioApuesta;
+        return indexJugadorAnterior;
+    }
+    /**
+     * Este mÃ©todo permite seguir la apuesta a partir de que un jugador la suba  o vaya dsps del primero
+     * @return devuelve el index del ultimo jugador que subio la apuesta
+     */
+    public static int modeloDeApuesta(int indexJugadorAnterior, JuegoPoker juego , Jugador[] jugadores) {
+        boolean sigueApuesta = true;
+        int indexDelUltimoEnSubirLaApuesta = indexJugadorAnterior; // esta variable mantiene el index del ultimo en subir
+        while (sigueApuesta==true){ // Este while mantiene la apuesta
+            boolean apuestaSubida = false;
+            for (int x = 0; x < (jugadores.length - 1) && apuestaSubida == false; x++){ //Este for sigue hasta que todos apuestan o se suba la apuesta
+                int indexJugadorActual = indexDeJugadorSiguiente(indexJugadorAnterior,jugadores);
+                Jugador jugadorActual = jugadores[indexJugadorActual];
+                if (jugadorActual.getEstarEnElJuego()== false){}
+                if (jugadorActual.getEstarEnElJuego()==true){
+                    jugadorActual.verApuesta();
+                    for (Jugador jugador : jugadores ) //avisoVeApuesta
+                        jugador.jugadorVeApuestaAviso(jugadores[indexJugadorActual]);
+                    if (!seSubioLaApuesta(jugadorActual,jugadores) ) {
+                        if (!aceptoLaApuesta(jugadorActual,jugadores)){
+                            jugadorActual.setEstarEnElJuegoFalse();
+                        }
+                    }
+                    else { // caso se subio la apuesta
+                        indexDelUltimoEnSubirLaApuesta = indexJugadorActual;
+                        indexJugadorAnterior = indexJugadorActual; //Tengo que cambiar esta variable para que guarde cual es el siguiente jugador
+                        apuestaSubida = true;
+                        continue; // Para que se rompa el for cuando apuesta subida != true
+                    }
+                }
+            }
+            if  (!apuestaSubida) {
+            } sigueApuesta = false;
+        }
+        return indexDelUltimoEnSubirLaApuesta;
     }
 
-    public static boolean seSubioLaApuesta(Jugador[] jugadores, int indexDeJugador) {
-        int dineroApostado = jugadores[indexDeJugador].getDineroApostado();
+
+    public static boolean seSubioLaApuesta(Jugador jugadorActual, Jugador[] jugadores) {
+        int dineroApostado = jugadorActual.getDineroApostado();
         int cantDeJugadores = jugadores.length;
         int contador = 0;
         for (int x = 0; x < cantDeJugadores; x++) {
@@ -72,6 +113,15 @@ public class UtilidadesJuegoPoker {
             return false;
         }
     }
+    public static boolean aceptoLaApuesta (Jugador jugadorActual,Jugador[] jugadores){
+        int mayorDineroApostado = 0;
+        for (Jugador x: jugadores){
+            if (mayorDineroApostado<x.getDineroApostado())
+                mayorDineroApostado = x.getDineroApostado();
+        }
+        if (jugadorActual.getDineroApostado() >= mayorDineroApostado) return  true;
+        else return false;
+    }
 
     /**
      * @return Este metodo no considera que un jugador puede estar o no en el juego
@@ -81,7 +131,7 @@ public class UtilidadesJuegoPoker {
             Jugador x = jugadores[indexJugador + 1];
             return indexJugador + 1;
         } catch (ArrayIndexOutOfBoundsException x) {
-            return 1;
+            return 0;
         }
     }
 
@@ -99,25 +149,24 @@ public class UtilidadesJuegoPoker {
     }
 
     /**
-     * puede dar error si todos los jugadores tienen la variable EstarEnElJuego en false
+     * devuelve -1 si no hay ningun jugador en el juego
      *
      * @return devuelve el primer jugador que sigue en el juego
      */
     public static int buscarIndexDePrimerJugadorEnElJuego(Jugador[] jugadores, int indexPrimerJugador) {
-        boolean jugEnElJuegoEncontrado = false;
         int indexJugActual = indexPrimerJugador;
-        int indexJugadorEncontrado = 0;
-        while (jugEnElJuegoEncontrado == false) {
+        int indexJugadorEncontrado = -1;
+        for (int x = 0;x< jugadores.length ; x++){
             if (jugadores[indexJugActual].getEstarEnElJuego() == true) {
-                jugEnElJuegoEncontrado = true;
                 indexJugadorEncontrado = indexJugActual;
+                break;
             } else indexJugActual = UtilidadesJuegoPoker.indexDeJugadorSiguiente(indexJugActual, jugadores);
         }
         return indexJugadorEncontrado;
     }
 
     /**
-    rota el arraylist hasta que quede el primerJugador quede en la posicion 0
+     rota el arraylist hasta que quede el primerJugador quede en la posicion 0
      */
     public static void ordenarArraylistManosEnMesa(ArrayList<Mano> manosEnMesa, Jugador primerJugador){
         while (true){

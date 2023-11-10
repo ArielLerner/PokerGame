@@ -2,9 +2,9 @@ package org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesC
 
 import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.JugadorMaquina;
 import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.EstadisticasDelJuegoPoker.Singleton;
-import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.EstadisticasDelJuegoPoker.PartesDelJuego;
 import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
 import org.IndiePapafritaCraft.ClasesDeJugador.Jugador;
+import org.IndiePapafritaCraft.ClasesJuegoPoker.PartesDelJuego;
 import org.IndiePapafritaCraft.ValoresJuntados.Estrategia;
 import org.IndiePapafritaCraft.ValoresJuntados.TipoDeJugador;
 
@@ -15,7 +15,7 @@ public class MetodosDeApuestas {
     public static double logaritmo(double base, double x) {
         return Math.log(x) / Math.log(base);
     }
-    //Métodos de estimaciónDeRondas
+    //MÃ©todos de estimaciÃ³nDeRondas
 
     /**
      * @param puntos, debe tener los puntos x,y
@@ -60,12 +60,12 @@ public class MetodosDeApuestas {
      * @param x es el jugador que REALIZA el metodo
      */
     public static int verApuesta(JugadorMaquina x,  Jugador ultimoEnSubirApuesta, int apuestaMax) {
-        PartesDelJuego parteDelJuego = x.getJuego().parteDelJuego();
+        PartesDelJuego parteDelJuego = x.getJuego().getDatos().getParteDelJuego();
         int cantApostadaRival = ultimoEnSubirApuesta.getDineroApostado();
         //caso 1 cantRival > ApuestaMax
         if (cantApostadaRival > apuestaMax) {
             double probDeGanarRival = MetodosDeApuestas.probDeGanarRival(ultimoEnSubirApuesta.getDineroApostado(),ultimoEnSubirApuesta);
-            double coeficiente = x.getEst().getProbDeGanarObjetiva() - probDeGanarRival; // puede dar entre - 1 y 1 // -1 sería el peor caso // 1 sería el mejor caso
+            double coeficiente = x.getEst().getProbDeGanarObjetiva() - probDeGanarRival; // puede dar entre - 1 y 1 // -1 serÃ­a el peor caso // 1 serÃ­a el mejor caso
             if (coeficiente>=0) return ultimoEnSubirApuesta.getDineroApostado();
             else {
                 double probDeAceptar = (1-coeficiente)/2 * 100; // 1 - coeficiente devuelve un nro entre 1 y 0 //1 mejor caso // 0 peor caso // el /2 es un desincentivo
@@ -114,14 +114,14 @@ public class MetodosDeApuestas {
         double probDeGanarRival;
         ArrayList<double[]> puntos = MetodosDeApuestas.readerDePuntos();
         if (j.claseDeJugador()== TipoDeJugador.JUGADOR_REAL || puntos.size() >= 6) {
-                double[] factores = MetodosDeApuestas.regresionCuadratica(puntos);
-                double x = cantApostada / j.getFinanzas();
-                double y = factores[0] * x * x + factores[1] * x + factores[2];
-                probDeGanarRival = y * 100;
+            double[] factores = MetodosDeApuestas.regresionCuadratica(puntos);
+            double x = cantApostada / (cantApostada +  j.getFinanzas());
+            double y = factores[0] * x * x + factores[1] * x + factores[2];
+            probDeGanarRival = y * 100;
         } else { //Voy a aplicar una funcion muy simple mientras la maquina aprende del jugador
-                probDeGanarRival = 2 / 3 * cantApostada + 1 / 3;
-            }
-            return probDeGanarRival;
+            probDeGanarRival = 2 / 3 * cantApostada + 1 / 3;
+        }
+        return probDeGanarRival;
     }
 
     /**
@@ -177,15 +177,17 @@ public class MetodosDeApuestas {
     }
 
     /**
-     * @return Este método promedia el nro de rondas/manos jugadas en los ultimos 10 juegos y devuelve un entero que es el promedio con el decimal cortado
+     * @return Este mÃ©todo promedia el nro de rondas/manos jugadas en los ultimos 10 juegos y devuelve un entero que es el promedio con el decimal cortado
      */
     public static int estimacionDeRondas() {
-        String filepath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeLaCpu\\UtilidadesCpu\\EstadisticasDelJuegoPoker\\CantDeManosJugadasEn10UltimasPartidas.txt";
+        String filepath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeJugador\\ClasesJugadorMaquina\\UtilidadesCpu\\EstadisticasDelJuegoPoker\\Files\\DatosApuesta\\CantDeManosJugadasEn10UltimasPartidas.txt";
         String[] ultimasManos = MetodosDeApuestas.leerManosJugadasEnUltimasPartidas(filepath);
         double promedio = 0;
-        for (String x : ultimasManos) {
-            promedio = promedio + Double.parseDouble(x);
-        }
+        try {
+            for (String x : ultimasManos) {
+                promedio = promedio + Double.parseDouble(x);
+            }
+        } catch (Exception x) {return 10;} // Este catch esta en el caso de que la estimacion de rondas no encuentre file
         promedio = promedio / ultimasManos.length;
         int estimacionDeRondas = (int) promedio;
         return estimacionDeRondas;
@@ -193,7 +195,7 @@ public class MetodosDeApuestas {
 
     public static int apuestaMax(JugadorMaquina x) {
         int apuestaMax = 0;
-        PartesDelJuego parteDelJuego = x.getJuego().parteDelJuego();
+        PartesDelJuego parteDelJuego = x.getJuego().getDatos().getParteDelJuego();
         Estrategia estrategia = x.getEst();
         if (parteDelJuego == PartesDelJuego.PRIMERAAPUESTA)
             apuestaMax = MetodosDeApuestas.apuestaMax1eraApuesta(x, estrategia.getProbDeGanarObjetiva(), Singleton.get(x).estimacionDeRondas);
@@ -217,7 +219,7 @@ public class MetodosDeApuestas {
         int apuestaMin = apuestaMinima(x);
         int dineroTotal = x.getFinanzas();
         int apuestaMax = (int) (camax * dineroTotal);
-        if (apuestaMax < apuestaMin && apuestaMax < 20 / 100 * x.getJuego().getBalanceInicial())
+        if (apuestaMax < apuestaMin && apuestaMax < 20 / 100 * x.getJuego().getDatos().getBalanceInicial())
             apuestaMax = apuestaMin;
         return apuestaMax;
     }
@@ -225,6 +227,7 @@ public class MetodosDeApuestas {
     public static int apuestaMinima(Jugador x) {
         int dineroRestante = x.getFinanzas();
         int rondasRestantes = Singleton.get(x).rondasRestantes;
+        if (rondasRestantes == 0){rondasRestantes = 1;}
         int apuestaMinima = dineroRestante / rondasRestantes;
         apuestaMinima = apuestaMinima - 1/10 * apuestaMinima; //para que se vayan jugando progresivamente mas rondas
         //En caso de que la apuesta minima sea 0 hay que hacer a la maquina jugar entonces hacemos que sea 1 hasta que se quede sin plata
@@ -233,10 +236,10 @@ public class MetodosDeApuestas {
     }
 
     /**
-     * Este método permite agregar las manosJugadas en la ultima partida al archivo ,
-     * Este método debería aplicarse cuando termina un juegoDePoker con la cuenta de manosJugadas
+     * Este metodo permite agregar las manosJugadas en la ultima partida al archivo ,
+     * Este metodo deberia aplicarse cuando termina un juegoDePoker con la cuenta de manosJugadas
      *
-     * @param manosJugadas es la cantDeManos que se jugó en la última partida
+     * @param manosJugadas es la cantDeManos que se jugo en la ultima partida
      */
     public static void writerDeManosJugadas(int manosJugadas) {
         try {
@@ -281,7 +284,7 @@ public class MetodosDeApuestas {
      *                     Este metodo va a escrbir la cantApostada/DineroTotal y la probDeGanar/100
      */
     public static void writerDePuntos(int cantApostada, Jugador jReal, double probDeGanar) {
-        double ejeX = cantApostada / jReal.getFinanzas();
+        double ejeX = cantApostada / (jReal.getFinanzas()+cantApostada);
         double ejey = probDeGanar / 100;
         try {
             String filepath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeJugador\\ClasesJugadorMaquina\\UtilidadesCpu\\EstadisticasDelJuegoPoker\\Files\\DatosApuesta\\Puntos x,y Qrival y probDeGanarTotal";
@@ -289,7 +292,7 @@ public class MetodosDeApuestas {
             //encontrar el primer renglon vacio
             int primerRenglonVacio = 0;
             for (int x = 0; x < lectura.length; x++) {
-                if (lectura[x].length() == 0) {
+                if (lectura[x]==null || lectura[x].length() == 0) {
                     primerRenglonVacio = x;
                     break;
                 }
@@ -323,8 +326,11 @@ public class MetodosDeApuestas {
                     r = true;
                 }
                 if (r != true) {
-                    if (lectura[x] == null || lectura[x].isBlank()) ;
-                    else writer.write(lectura[x]);
+                    if (lectura[x] == null || lectura[x].isBlank()) {
+
+                    }
+                    else
+                        writer.write(lectura[x]);
                     writer.newLine();
                 }
             }
@@ -349,7 +355,7 @@ public class MetodosDeApuestas {
 
     /**
      * @return Devuelve un string array con los numeros en el filepath
-     * @throws NumberFormatException El  método puede dar error si el el filepath al que hace referencia tiene una linea null entre el renglón 1 y 10
+     * @throws NumberFormatException El  metodo puede dar error si el el filepath al que hace referencia tiene una linea null entre el renglÃ³n 1 y 10
      */
     private static String[] leerManosJugadasEnUltimasPartidas(String filepath) {
         String[] manosJugadas = new String[10];
@@ -365,10 +371,10 @@ public class MetodosDeApuestas {
         return manosJugadas;
     }
 
-    //Metodos de Camax (Coeficiente de apuesta máxima )
+    //Metodos de Camax (Coeficiente de apuesta mÃ¡xima )
 
     /**
-     * @return devuelve el coeficiente de apuesta máxima
+     * @return devuelve el coeficiente de apuesta maxima
      */
     public static double camax(JuegoPoker juego, double probDeGanar, int estimacionDeRondas) {
         double b = MetodosDeApuestas.beneficio(probDeGanar, juego.cantDeJugadores());
@@ -395,7 +401,7 @@ public class MetodosDeApuestas {
             return (beneficio / 2) * 2 / 3;
 
         } else {
-            //caso  (beneficio > 1) uso una funcion logarítmica
+            //caso  (beneficio > 1) uso una funcion logarÃ­tmica
             // resto 1 al beneficio para obtener un nro en rango: 0-(cantDeJug-1)
             beneficio--;
             return MetodosDeApuestas.logaritmo(12.901, (9.309 * beneficio / (cantDeJug - 1) + 3.591));
