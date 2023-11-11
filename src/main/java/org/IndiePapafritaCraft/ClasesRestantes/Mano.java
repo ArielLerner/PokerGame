@@ -36,7 +36,7 @@ public class Mano {
         String a = "";
         for (int x = 0; x < 5; x++) {
             // a = a + "C" + (x) + ": " + this.mano[x].toString() + "  ";
-            a = a + this.mano[x].toString() + "  ";
+            a = a + this.mano[x].toString() + "  " + "| " ;
 
         }
         return a;

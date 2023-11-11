@@ -197,7 +197,7 @@ public class MetodosDeApuestas {
         int apuestaMax = 0;
         PartesDelJuego parteDelJuego = x.getJuego().getDatos().getParteDelJuego();
         Estrategia estrategia = x.getEst();
-        if (parteDelJuego == PartesDelJuego.PRIMERAAPUESTA)
+        if (parteDelJuego == PartesDelJuego.PRIMERAAPUESTA   )
             apuestaMax = MetodosDeApuestas.apuestaMax1eraApuesta(x, estrategia.getProbDeGanarObjetiva(), Singleton.get(x).estimacionDeRondas);
         if (parteDelJuego == PartesDelJuego.SEGUNDAAPUESTA)
             apuestaMax = MetodosDeApuestas.apuestaMax2daApuesta(x, estrategia.getProbDeGanarObjetiva(), Singleton.get(x).estimacionDeRondas);

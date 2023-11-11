@@ -43,7 +43,7 @@ public class UtilidadesJuegoPokerTerminal {
      * si no se devuelve nada da -1
      */
     public static int scanBalanceInicial() {
-        System.out.println("Â¿Cuanto dinero empezarÃ¡ teniendo cada jugador?");
+        System.out.println("¿Cuanto dinero empezara teniendo cada jugador?");
         int balanceInicial = scanIntEntreDosNros(50, 1000);
         return balanceInicial;
     }
@@ -66,7 +66,7 @@ public class UtilidadesJuegoPokerTerminal {
         int jugadoresTotales = 0;
         int jugadoresReales = 0;
         //preguntar al usuario los jugadores
-        System.out.println("Â¿De a cuantos jugadores quieres jugar?");
+        System.out.println("¿De a cuantos jugadores quieres jugar?");
         jugadoresTotales = scanIntEntreDosNros(2, 6);
         jugadoresReales = 1;
         //hacer el array
@@ -75,7 +75,7 @@ public class UtilidadesJuegoPokerTerminal {
             if (x < jugadoresReales) {
                 tipoDeJugador[x] = TipoDeJugador.JUGADOR_REAL;
             }
-            if (x > jugadoresReales) {
+            if (x >= jugadoresReales) {
                 tipoDeJugador[x] = TipoDeJugador.JUGADOR_DE_LA_MAQUINA;
             }
         }
@@ -102,7 +102,7 @@ public class UtilidadesJuegoPokerTerminal {
                     }
                     else System.out.println("Introducir digitos y numeros");
                 }
-                else System.out.println("El nombre no puede estar vacÃ­o");
+                else System.out.println("El nombre no puede estar vacio");
             }
             nombres[x] = nombre;
         }
@@ -130,7 +130,7 @@ public class UtilidadesJuegoPokerTerminal {
         return true;
     }
     /**
-     * @return devuelve un string sin los espacios al final que podÃ­a tener el otro
+     * @return devuelve un string sin los espacios al final que podia tener el otro
      * si todo eln nombre tiene espacios puede devolver null
      */
     private static String sacarEspaciosAlFinal(String x) {

@@ -32,7 +32,7 @@ public class JugadorMaquina extends Jugador {
     private double toleracionDeEstrategia;
 
     public void verApuesta() {
-        int cantAsubir = MetodosDeApuestas.verApuesta(this,Singleton.get(this).ultimoEnSubir(),MetodosDeApuestas.apuestaMax(this));
+        int cantAsubir = this.getEst().singletonApuestaMax(this);
         this.apostarXcantidad(cantAsubir);
     }
     public boolean[] cambioCartas(){
@@ -56,7 +56,7 @@ public class JugadorMaquina extends Jugador {
     /**
      *
      * @param toleracionDeEstrategiasPeores debe contener un valor entre 0 y 1 que es el margen que se tolera para elegir estrategias
-     * @return devuelve la estrategia elegida
+     * @return inicializa apuestaMax en -1
      */
     public Estrategia elegirEstrategia(double toleracionDeEstrategiasPeores) {
         //estrategias
@@ -86,7 +86,7 @@ public class JugadorMaquina extends Jugador {
             }
         }
         this.est = mejoresEstrategias.get(indexEstrategiaElegida);
-        est.setApuestaMax(MetodosDeApuestas.apuestaMax(this));
+        this.est.setApuestaMaxEnMenos1();
         return mejoresEstrategias.get(indexEstrategiaElegida);
     }
     public double probDeGanar(ValorYProbabilidad[] x){

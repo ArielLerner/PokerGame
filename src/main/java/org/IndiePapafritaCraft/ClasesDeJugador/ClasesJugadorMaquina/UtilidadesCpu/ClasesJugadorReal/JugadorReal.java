@@ -24,8 +24,6 @@ public class JugadorReal extends Jugador {
         for (Jugador j : juego.getJugadores())
             if (j.getDineroApostado() > apuestaMasAlta) apuestaMasAlta = j.getDineroApostado();
         int cantParaApostar = this.scanApuesta("a", "na", maximoNroParaSubir, apuestaMasAlta);
-        System.out.println("Cant para apostar: " + cantParaApostar);
-        System.out.println("dinero apostado " + this.getDineroApostado());
         this.apostarXcantidad(cantParaApostar);
     }
 

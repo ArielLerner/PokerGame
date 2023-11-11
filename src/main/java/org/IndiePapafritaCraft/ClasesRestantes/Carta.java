@@ -13,10 +13,11 @@ public class Carta {
     /**
      Pasa un objeto de la clase Carta a string
      */
-    String palos[] = {"T","P","C","D"};
+    String[] numeros = {"DOS","TRES","CUATRO","CINCO","SEIS","SIETE","OCHO","NUEVE","DIEZ","J","Q","K","AS"};
+    String palos[] = {"trebol","picas","corazon","diamante"};
 
     public  String toString(){
-        return ""+ this.numero+" "+ palos[this.palo];
+        return ""+ numeros[this.numero].toLowerCase()+" "+ "de " + " " + palos[this.palo];
     }
     /**
      devuelve el numero de la carta

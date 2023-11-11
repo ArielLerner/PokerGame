@@ -81,6 +81,9 @@ public class UtilidadesPartesDelJuego {
                         cartaParaSacar++;
                     }
                 }
+                for (Jugador j:jugadores) {
+                    j.cambioCartasAviso(jugadores[x],cartaParaSacar);
+                }
             }
         }
     }
@@ -92,7 +95,7 @@ public class UtilidadesPartesDelJuego {
         int manoDeApuesta = UtilidadesJuegoPoker.buscarIndexDePrimerJugadorEnElJuego(jugadores, juego.getDatos().getIndexUltimoJugadorQueSubioApuesta());
         { //caso: si no hay jugadores en el juego
             int ultimoJugadorQueSubio = UtilidadesJuegoPoker.Apuesta(juego, manoDeApuesta);
-            //Se guarda el Ãºltimo que subio la apuesta
+            //Se guarda el ultimo que subio la apuesta
             DatosMomentaneos datos = juego.getDatos();
             datos.setIndexUltimoJugadorQueSubioApuesta(ultimoJugadorQueSubio);
             juego.setDatos(datos);

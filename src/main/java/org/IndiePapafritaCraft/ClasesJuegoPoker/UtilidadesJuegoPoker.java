@@ -25,7 +25,7 @@ public class UtilidadesJuegoPoker {
     }
 
     /**
-     * Este mÃ©todo estÃ¡ obsoleta
+     * Este metodo estÃ¡ obsoleta
      * @return devuelve el index del ultimo jugador que subio la apuesta
      *
      */
@@ -90,8 +90,8 @@ public class UtilidadesJuegoPoker {
                     }
                 }
             }
-            if  (!apuestaSubida) {
-            } sigueApuesta = false;
+            if  (apuestaSubida==false) {
+             sigueApuesta = false; }
         }
         return indexDelUltimoEnSubirLaApuesta;
     }

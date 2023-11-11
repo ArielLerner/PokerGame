@@ -136,5 +136,8 @@ public class JuegoPoker {
         }
         return apuestaMasAlta;
     }
+    public PartesDelJuego getParteDelJuego(){
+        return this.getDatos().getParteDelJuego();
+    }
 }
 
