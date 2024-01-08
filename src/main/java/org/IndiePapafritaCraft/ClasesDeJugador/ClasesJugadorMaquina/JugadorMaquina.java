@@ -32,7 +32,9 @@ public class JugadorMaquina extends Jugador {
     private double toleracionDeEstrategia;
 
     public void verApuesta() {
-        int cantAsubir = this.getEst().singletonApuestaMax(this);
+        int cantAsubir = this.getEst().singletonApuestaMax(this); //devuelve el nro que le gustaria subir a la maquina
+        if (cantAsubir<this.getDineroApostado()) cantAsubir = this.getDineroApostado(); //caso de que quiera apostar negativo
+        if (cantAsubir>this.getDineroApostado() && cantAsubir<juego.getMayorApuesta()) cantAsubir = this.getDineroApostado(); // caso: se apuesta de mas
         this.apostarXcantidad(cantAsubir);
     }
     public boolean[] cambioCartas(){

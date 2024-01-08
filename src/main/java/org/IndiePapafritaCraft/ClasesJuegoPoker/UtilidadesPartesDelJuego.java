@@ -36,7 +36,6 @@ public class UtilidadesPartesDelJuego {
     }
 
     public static void repartirCartas(JuegoPoker juego) {
-
         if (juego.jugQueSiguenEnElJuego()==0 || juego.jugQueSiguenEnElJuego()==1) return; //caso en el que no hay jugadores o hay 1
         juego.getDatos().setParteDelJuego(PartesDelJuego.REPARTIRCARTAS);
         Mazo mazo = juego.getMazo();
@@ -46,8 +45,9 @@ public class UtilidadesPartesDelJuego {
             if (jugadores[x].getEstarEnElJuego() == true)
                 jugadores[x].setMano(mazo.sacarManoDelMazo(x));
         }
-        for (Jugador jugador : juego.getJugadores())
+        for (Jugador jugador : juego.getJugadores()) {
             jugador.repartirCartasAviso();
+        }
     }
 
     /**
@@ -64,6 +64,12 @@ public class UtilidadesPartesDelJuego {
         DatosMomentaneos datos = juego.getDatos();
         datos.setIndexUltimoJugadorQueSubioApuesta(ultimoJugadorQueSubio);
         juego.setDatos(datos);
+        if (juego.getMayorApuesta() == juego.getPrecioDeLuz()) { //En el caso que nadie suba la apuesta hay que volver a mezclar
+            System.out.println("Como nadie subió la apuesta, entonces se vuelve a mezclar...");
+            System.out.println();
+            repartirCartas(juego);
+            primeraApuesta(juego,indexDeMano);
+        }
     }
 
     public static void cambioCartas(JuegoPoker juego, int indexDeLaMano) {
@@ -81,7 +87,8 @@ public class UtilidadesPartesDelJuego {
                         cartaParaSacar++;
                     }
                 }
-                for (Jugador j:jugadores) {
+                jugadores[x].getMano().ordenar(); //ordenar la mano
+                for (Jugador j:jugadores) { //cambio cartas aviso
                     j.cambioCartasAviso(jugadores[x],cartaParaSacar);
                 }
             }

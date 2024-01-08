@@ -59,7 +59,7 @@ public class Estrategia {
             apuestaMax = MetodosDeApuestas.apuestaMax(x);
             momentoApuestaMax = proxApuesta;
         }
-        return apuestaMax;
+            return apuestaMax;
     }
 
 

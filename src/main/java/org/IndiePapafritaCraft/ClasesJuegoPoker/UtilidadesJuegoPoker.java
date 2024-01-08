@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class UtilidadesJuegoPoker {
     /**
-     * @param indexMano es el jugador que le tocarÃ­a ser primero pero si decidiÃ³ no jugar la mano entonces puede ser otro
+     * @param indexMano es el jugador que le tocaria ser primero pero si decidia no jugar la mano entonces puede ser otro
      * @return devuelve el index del ultimo jugador en subir, si no hay ningun jugador en el juego, devuelve -1
      */
     public static int Apuesta(JuegoPoker juego, int indexMano) {

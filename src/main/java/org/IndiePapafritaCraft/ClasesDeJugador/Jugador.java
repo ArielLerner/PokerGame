@@ -62,7 +62,7 @@ public abstract class Jugador {
     public boolean getEstarEnElJuego() {return estarEnElJuego;}
     public void setEstarEnElJuegoFalse(){this.estarEnElJuego=false;}
     public void restarXaLasFinanzas(int x){this.finanzas = this.finanzas-x;}
-    public void sumarXalDineroApostado(int x){this.dineroApostado=dineroApostado+x;}
+    public void sumarXalDineroApostado(int x){dineroApostado=dineroApostado+x;}
     public void setMano(Mano mano){this.manoDeJugador=mano;}
     public void cambiarUnaCarta(int posicion, Carta carta){manoDeJugador.cambiarUnaCarta(posicion,carta);}
     public void setDineroApostadoEn0(){this.dineroApostado=0;}

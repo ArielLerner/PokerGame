@@ -2,7 +2,7 @@ package org.IndiePapafritaCraft.ClasesJuegoPoker;
 
 import org.IndiePapafritaCraft.ClasesDeJugador.Jugador;
 import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.JugadorMaquina;
-import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.ClasesJugadorReal.JugadorReal;
+import org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorReal.JugadorReal;
 import org.IndiePapafritaCraft.ClasesRestantes.BalanceDeLaRonda;
 import org.IndiePapafritaCraft.ClasesRestantes.Mazo;
 import org.IndiePapafritaCraft.ClasesRestantes.Mano;
@@ -20,7 +20,12 @@ public class JuegoPoker {
         boolean[] seguirJugando = {true}; // tengo que usar un array para cuando lo pase como metodo lo pueda modificar
         while (seguirJugando[0] == true) {
             UtilidadesPartesDelJuego.jugarMano(this);
-            for (int x = 0; x < jugadores.length; x++) {
+            if (this.jugadoresQuePuedenPagarLuz() == 1){ //caso en que alguien gane el juego
+                System.out.println();
+                System.out.println("|||||   El GANADOR DEL JUEGO ES: " + jugadorConMasDinero().getNombre() +" |||||");
+                return;
+            }
+            for (int x = 0; x < jugadores.length; x++) { //interfaz entre manos
                 jugadores[x].entreManosAviso(seguirJugando);
             }
         }
@@ -115,6 +120,24 @@ public class JuegoPoker {
             if (j.getEstarEnElJuego()==true) contador++;
         }
         return contador;
+    }
+    public int jugadoresQuePuedenPagarLuz() {
+        int contador = 0;
+        for (Jugador jugador : jugadores) {
+            if (jugador.getDineroApostado() + jugador.getFinanzas() >= precioDeLuz) { //caso en el que puede pagar la luz
+                contador++;
+            }
+        }
+        return contador;
+    }
+    public Jugador jugadorConMasDinero(){
+        Jugador x = jugadores[0];
+        for (Jugador jugador : jugadores) {
+            if (jugador.getFinanzas()+jugador.getDineroApostado() > x.getDineroApostado()+x.getFinanzas()) {
+                x = jugador;
+            }
+        }
+        return x;
     }
     public int numeroMayorDelMazo() {return mazo.numeroMayor();}
     public int numeroMenorDelMazo() {return mazo.numeroMenor();}

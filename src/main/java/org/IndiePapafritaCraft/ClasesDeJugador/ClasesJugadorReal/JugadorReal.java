@@ -1,8 +1,9 @@
-package org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorMaquina.UtilidadesCpu.ClasesJugadorReal;
+package org.IndiePapafritaCraft.ClasesDeJugador.ClasesJugadorReal;
 
 
 import org.IndiePapafritaCraft.ClasesDeJugador.Jugador;
 import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
+import org.IndiePapafritaCraft.ClasesJuegoPoker.PartesDelJuego;
 import org.IndiePapafritaCraft.ClasesJuegoPoker.UtilidadesJuegoPoker;
 import org.IndiePapafritaCraft.ClasesRestantes.Mano;
 import org.IndiePapafritaCraft.ValoresJuntados.TipoDeJugador;
@@ -17,8 +18,13 @@ public class JugadorReal extends Jugador {
     }
 
     public void verApuesta() {
-        System.out.println("Tu balance es de " + this.getFinanzas());
-        System.out.println("¿Cuanto quieres apostar? " + " si quieres aceptar, escribe: a , si no quieres apostar mas escribe , na ");
+        if (this.getFinanzas()>1) {
+            System.out.print("¡te quedan " + this.getFinanzas() + "$!");
+        }
+        else {
+            System.out.print("¡te queda " + this.getFinanzas() + "$!");
+        }
+        System.out.println(" ¿Cuanto quieres apostar? si. quieres aceptar la apuesta, escribe: a , si no quieres apostar mas escribe , na ");
         int maximoNroParaSubir = dineroApostado + finanzas;
         int apuestaMasAlta = 0;
         for (Jugador j : juego.getJugadores())
@@ -39,7 +45,7 @@ public class JugadorReal extends Jugador {
     public void pagarLuzAviso() {
         int nroDeJugEnJuego = 0;
         Jugador[] jugadores = juego.getJugadores();
-        System.out.println("Los jugadores que juegan son : ");
+        System.out.print("Los jugadores que juegan son: ");
         for (int x = 0; x < jugadores.length; x++) {
             if (jugadores[x].getEstarEnElJuego() == true)
                 System.out.print(jugadores[x].getNombre() + " ");
@@ -49,18 +55,57 @@ public class JugadorReal extends Jugador {
 
     public void repartirCartasAviso() {
         Mano mano = this.getMano();
-        System.out.println("Mano: ");
+        System.out.print("Mano: ");
         System.out.println(mano);
+        System.out.println();
     }
 
     public void jugadorVeApuestaAviso(Jugador x) {
+        JuegoPoker juego = x.getJuego();
+        if (x!=this) {
+            System.out.print("El jugador " + x.getNombre() + " ");
+        } //casos de pasar
+        if (juego.getParteDelJuego()== PartesDelJuego.PRIMERAAPUESTA){ // caso pasar 1eraApuesta
+            if (x.getDineroApostado()==juego.getPrecioDeLuz() && x.getDineroApostado()==juego.getMayorApuesta()){
+                if (x==this) {
+                    System.out.println("has pasado, tu apuesta es de " + x.getDineroApostado());
+                }
+                else {
+                    System.out.println("ha pasado, su apuesta es de " + x.getDineroApostado());
+                }
+                return;
+            }
+        }
+        if (x.getJuego().getParteDelJuego()==PartesDelJuego.SEGUNDAAPUESTA){ //caso pasar segunda apuesta
+            int indexJugadorApuestaMax1eraApuesta = juego.getDatos().getIndexUltimoJugadorQueSubioApuesta();
+            int apuestaMax1eraApuesta = juego.getJugadores()[indexJugadorApuestaMax1eraApuesta].getDineroApostado();
+            if (x.getDineroApostado()==apuestaMax1eraApuesta && x.getDineroApostado()==juego.getMayorApuesta()){
+                if (x==this){
+                    System.out.println("has pasado, tu apuesta es de " + x.getDineroApostado());
+                }
+                else {
+                    System.out.println("ha pasado, su apuesta es de " + x.getDineroApostado());
+                }
+                return;
+            }
+        }
+        //caso subir, aceptar o no aceptar la apuesta
         int queHizo = x.queHizoEnLaApuesta(juego);
-        System.out.print("El jugador " + x.getNombre() + " ");
-        if (queHizo == 0) System.out.println("no ha aceptado la apuesta");
-        if (queHizo == 1) System.out.println("ha aceptado la apuesta de: " + x.getDineroApostado());
-        if (queHizo == 2) System.out.println("ha subido la apuesta a: " + x.getDineroApostado());
+        if (queHizo == 0){
+            if (x==this) System.out.println("no has aceptado la apuesta de " + x.getDineroApostado());
+            else System.out.println("no ha aceptado la apuesta, su apuesta era de " + x.getDineroApostado() );
+        }
+        if (queHizo == 1){
+            if (x==this) System.out.println("has aceptado la apuesta de "+ x.getDineroApostado());
+            else System.out.println("ha aceptado la apuesta de " + x.getDineroApostado());
+        }
+        if (queHizo == 2){
+            if (x==this) System.out.println("has subido la apuesta a " + x.getDineroApostado());
+            else System.out.println("ha subido la apuesta a " + x.getDineroApostado());
+        }
     }
         public void cambioCartasAviso (Jugador x,int cartasCambiadas){
+        System.out.println();
             if (x == this) { // para que printee el cambio de cartas
                 Mano mano = this.getMano();
                 System.out.println("Mano con cartas cambiadas: ");
@@ -159,7 +204,7 @@ public class JugadorReal extends Jugador {
                     try {
                         int input = Integer.parseInt(line);
                         if (input > nroMax || input < nroMin)
-                            System.out.println("El nro debe estar entre " + nroMin + " y " + nroMax + " o " + noSubir + " para no aceptar");
+                            System.out.println("El nro debe estar entre " + nroMin + " y " + nroMax + " o se debe escribir |" + noSubir + "| para no aceptar");
                         else return input;
                     } catch (Exception x) {
                         System.out.println("Entrada no valida");
