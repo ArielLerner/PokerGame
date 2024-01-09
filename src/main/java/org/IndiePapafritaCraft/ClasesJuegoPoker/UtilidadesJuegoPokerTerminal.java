@@ -44,7 +44,7 @@ public class UtilidadesJuegoPokerTerminal {
      */
     public static int scanBalanceInicial() {
         System.out.println("¿Cuanto dinero empezara teniendo cada jugador?");
-        int balanceInicial = scanIntEntreDosNros(50, 1000);
+        int balanceInicial = scanIntEntreDosNros(100, 1000);
         return balanceInicial;
     }
 

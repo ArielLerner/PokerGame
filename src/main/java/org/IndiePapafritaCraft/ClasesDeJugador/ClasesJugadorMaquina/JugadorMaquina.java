@@ -54,6 +54,7 @@ public class JugadorMaquina extends Jugador {
         Singleton.get(this).actualizacionFinDeMano(this);}
     public void entreManosAviso(boolean[] seguirConElJuego){
         Singleton.get(this).actualizacionEntreManos(seguirConElJuego[0],this);}
+    public void jugadorGanadorAviso(){};
     public TipoDeJugador claseDeJugador(){return TipoDeJugador.JUGADOR_DE_LA_MAQUINA;}
     /**
      *

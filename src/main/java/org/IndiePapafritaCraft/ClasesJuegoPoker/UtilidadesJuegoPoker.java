@@ -4,6 +4,7 @@ import org.IndiePapafritaCraft.ClasesDeJugador.Jugador;
 import org.IndiePapafritaCraft.ClasesRestantes.Mano;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class UtilidadesJuegoPoker {
     /**

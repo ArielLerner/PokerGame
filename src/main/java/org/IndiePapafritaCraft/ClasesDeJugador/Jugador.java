@@ -42,6 +42,7 @@ public abstract class Jugador {
     public abstract void cambioCartasAviso(Jugador x , int cartasCambiadas);
     public abstract void finalDelJuegoAviso(ArrayList<Mano> mostrarCartas, ArrayList<Jugador> jugadoresGanadores , int pozo);
     public abstract void entreManosAviso(boolean[] seguirConElJuego);
+    public abstract void jugadorGanadorAviso();
     //metodos normales
     public Mano getMano() {return manoDeJugador;}
     public void DarMano(Mano manoDeJugador2){

@@ -123,18 +123,24 @@ public class JugadorReal extends Jugador {
          */
         public void finalDelJuegoAviso (ArrayList < Mano > mostrarCartas, ArrayList < Jugador > jugadoresGanadores,
         int pozo){
-            //Println de las cartas que se muestran en mesa
-            for (int x = 0; x < mostrarCartas.size(); x++) {
-                Jugador jugador = UtilidadesJuegoPoker.buscarJugador(mostrarCartas.get(x), juego.getJugadores());
-                System.out.println(" El jugador " + jugador.getNombre() + " tiene: " + jugador.getMano().valorDeLaMano(juego.numeroMayorDelMazo(), true));
-                System.out.println(" Sus cartas son: " + jugador.getMano());
+            if (mostrarCartas.size() > 1) { //solo se muestran las cartas si hay mas de 1 jugador que llego al final
+                for (int x = 0; x < mostrarCartas.size(); x++) {
+                    Jugador jugador = UtilidadesJuegoPoker.buscarJugador(mostrarCartas.get(x), juego.getJugadores());
+                    System.out.println();
+                    System.out.println(" El jugador " + jugador.getNombre() + " tiene: " + jugador.getMano().valorDeLaMano(juego.numeroMayorDelMazo(), true));
+                    System.out.println(" Sus cartas son: " + jugador.getMano());
+                }
             }
             //Println de los ganadores
             //caso 1 ganador
             if (jugadoresGanadores.size() == 1) {
                 Jugador ganador = jugadoresGanadores.get(0);
-                System.out.println("EL GANADOR ES:");
-                System.out.println("El jugador " + ganador.getNombre() + " quien se lleva el pozo de: " + pozo);
+                System.out.println();
+                System.out.print("|| EL GANADOR ES... ");
+                esperarSegundos(1);
+                System.out.println("El jugador " + ganador.getNombre() + " quien se lleva el pozo de: " + pozo + " ||");
+                esperarSegundos(1);
+                System.out.println();
             }
             //caso mas de 1 ganador
             else {
@@ -154,7 +160,7 @@ public class JugadorReal extends Jugador {
         public void entreManosAviso ( boolean[] seguirJugando){
             Scanner scan = new Scanner(System.in);
 
-            menu();
+            menuEntreManos();
             boolean tomarDecision = false;
             while (tomarDecision == false) {
                 String input = scan.nextLine().toUpperCase();
@@ -171,17 +177,59 @@ public class JugadorReal extends Jugador {
                     tomarDecision = true;
                 } else {
                     System.out.println("Error en comando: " + input);
-                    menu();
+                    menuEntreManos();
                 }
             }
         }
 
-        private void menu () {
+    /**
+     * este metodo crea otro juego por lo tanto hay que terminar el juego
+     *
+     */
+    public void jugadorGanadorAviso (){
+        System.out.println();
+        System.out.println("|||||   El GANADOR DEL JUEGO ES: " + juego.jugadorConMasDinero().getNombre() +" |||||");
+        Scanner scan = new Scanner(System.in);
+        menuFinDelJuego();
+        boolean tomarDecision = false;
+        while (tomarDecision == false) {
+            String input = scan.nextLine().toUpperCase();
+            if (input.equals("J")) {
+                System.out.println();
+                JuegoPoker otroJuego = JuegoPoker.crearJuegoTerminal(juego.getDatos().getToleracionDeEstrategia()); //inicia una nueva partida
+                otroJuego.jugar();
+                tomarDecision=true;
+            }   else if (input.equals("T")) {
+                System.out.println("Fin del Juego");
+                tomarDecision=true;
+            } else if (input.equals("F")) {
+                for (Jugador jugador : juego.getJugadores()) {
+                    System.out.println("El jugador " + jugador.getNombre() + " tiene una cantidad de " + jugador.getFinanzas());
+                }
+            } else {
+                System.out.println("Error en comando: " + input);
+                System.out.println();
+                menuFinDelJuego();
+            }
+        }
+    }
+
+        private void menuEntreManos() {
+            System.out.println( "      ----------------------------------    ");
             System.out.println("Si quieres CONTINUAR con la siguiente mano apreta C");
             System.out.println("Si quieres TERMINAR el juego apreta T");
             System.out.println("Si quieres saber cuanto dinero tienes, apreta D");
             System.out.println("Si quieres saber cuanto dinero tiene cada jugador , apreta F");
             System.out.println("Finalmente apreta ENTER para CONFIRMAR");
+            System.out.println("      ----------------------------------    ");
+        }
+        private void menuFinDelJuego() {
+            System.out.println( "    ---------------------------   ");
+            System.out.println("Si quieres jugar una nueva partida apreta J");
+            System.out.println("Si quieres TERMINAR el juego apreta T");
+            System.out.println("Si quieres saber cuanto dinero tiene cada jugador apreta F");
+            System.out.println("Finalmente apreta ENTER para CONFIRMAR");
+            System.out.println("    ----------------------------  ");
         }
 
         public TipoDeJugador claseDeJugador () {
@@ -261,6 +309,15 @@ public class JugadorReal extends Jugador {
                 }
             }
             return cambioCartas;
+        }
+
+    /**
+     * este metodo puede servir para hacer interfaces
+     */
+    public static void esperarSegundos (int cantDeSegundos){
+            try { //hace que el programa espere 1 segundo
+                Thread.sleep(cantDeSegundos*1000);
+            } catch (InterruptedException e) {}
         }
     }
 

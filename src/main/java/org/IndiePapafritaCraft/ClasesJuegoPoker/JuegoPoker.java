@@ -8,6 +8,8 @@ import org.IndiePapafritaCraft.ClasesRestantes.Mazo;
 import org.IndiePapafritaCraft.ClasesRestantes.Mano;
 import org.IndiePapafritaCraft.ValoresJuntados.TipoDeJugador;
 
+import java.util.Random;
+
 public class JuegoPoker {
     private Mazo mazo;
     private int precioDeLuz;
@@ -21,8 +23,7 @@ public class JuegoPoker {
         while (seguirJugando[0] == true) {
             UtilidadesPartesDelJuego.jugarMano(this);
             if (this.jugadoresQuePuedenPagarLuz() == 1){ //caso en que alguien gane el juego
-                System.out.println();
-                System.out.println("|||||   El GANADOR DEL JUEGO ES: " + jugadorConMasDinero().getNombre() +" |||||");
+                for (Jugador j:jugadores) j.jugadorGanadorAviso();
                 return;
             }
             for (int x = 0; x < jugadores.length; x++) { //interfaz entre manos
@@ -31,10 +32,10 @@ public class JuegoPoker {
         }
         System.out.println("Fin Del Juego");
     }
-    public JuegoPoker(Mazo mazoDelJuego, int precioDeLuz2, int balanceInicial) {
+    public JuegoPoker(Mazo mazoDelJuego, int precioDeLuz2, int balanceInicial, double toleracionDeEstrategia) {
         mazo = mazoDelJuego;
         precioDeLuz= precioDeLuz2;
-        datos = new DatosMomentaneos(0,0);
+        datos = new DatosMomentaneos(0,toleracionDeEstrategia);
     }
     public void setJugadores(Jugador[] jugadores2){
         jugadores=jugadores2;
@@ -50,7 +51,7 @@ public class JuegoPoker {
         int nroDeJugadores = tipoDeJugadores.length;
         String[] nombres  = UtilidadesJuegoPokerTerminal.scanNombreDeJugadores(nroDeJugadores);
         Mazo mazo1  = JuegoPoker.crearMazo(nroDeJugadores);
-        JuegoPoker juego = new JuegoPoker(mazo1,precioDeLuz,nroDeBalanceInicial);
+        JuegoPoker juego = new JuegoPoker(mazo1,precioDeLuz,nroDeBalanceInicial, toleracionDeEstrategia);
         //Hacer los jugadores
         Mano[] manos = juego.crearManosDeJugadores(nroDeJugadores);
         Jugador[] jugadores = juego.crearJugadores(nroDeJugadores,tipoDeJugadores,manos,nroDeBalanceInicial,nombres, toleracionDeEstrategia);
@@ -61,7 +62,7 @@ public class JuegoPoker {
     public static JuegoPoker crearJuegoPorArgumentos(int balanceInicial, int precioLuz, TipoDeJugador[] tipoDeJugadores, String[] nombres,double toleracionEstrategias) {
         int nroDeJugadores = nombres.length;
         Mazo mazo1 = JuegoPoker.crearMazo(nroDeJugadores);
-        JuegoPoker juego = new JuegoPoker(mazo1, precioLuz, balanceInicial);
+        JuegoPoker juego = new JuegoPoker(mazo1, precioLuz, balanceInicial, toleracionEstrategias);
         Mano[] manos = juego.crearManosDeJugadores(nroDeJugadores);
         Jugador [] jugador = juego.crearJugadores(nroDeJugadores, tipoDeJugadores, manos, balanceInicial,nombres,toleracionEstrategias );
         juego.setJugadores(jugador);
@@ -158,6 +159,11 @@ public class JuegoPoker {
                 apuestaMasAlta = jugadores[x].getDineroApostado();
         }
         return apuestaMasAlta;
+    }
+    public int sortearIndexMano(){
+        double x =  Math.random()*jugadores.length;
+        int y = (int) x;
+        return y;
     }
     public PartesDelJuego getParteDelJuego(){
         return this.getDatos().getParteDelJuego();
