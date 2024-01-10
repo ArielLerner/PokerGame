@@ -29,9 +29,9 @@ public enum ComparacionDeManos {
         return mejoresManos;
     }
     public static ComparacionDeManos comparar(Mano A, Mano B, int nroMasAltoDelMazo){
-        ValorDeMano valoeManoA= A.valorDeLaMano(nroMasAltoDelMazo,true);
+        ValorDeMano valorManoA= A.valorDeLaMano(nroMasAltoDelMazo,true);
        ValorDeMano valorManoB = B.valorDeLaMano(nroMasAltoDelMazo,true);
-      int ordinalDeA = valoeManoA.ordinal();
+      int ordinalDeA = valorManoA.ordinal();
       int ordinalDeB = valorManoB.ordinal();
       if (ordinalDeA>ordinalDeB){return GANA;}
       if (ordinalDeA<ordinalDeB){return PIERDE;}

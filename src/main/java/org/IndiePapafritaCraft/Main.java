@@ -8,7 +8,7 @@ import org.IndiePapafritaCraft.ValoresJuntados.TipoDeJugador;
 import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) {         int balanceInicial = 6;
+    public static void main(String[] args) {         int balanceInicial = 100;
         int precioLuz =5;
         TipoDeJugador[] tipoDeJugadores = {TipoDeJugador.JUGADOR_REAL, TipoDeJugador.JUGADOR_DE_LA_MAQUINA};
         String[] nombres = new String[]{"j1", "j2"};

@@ -24,12 +24,22 @@ public class JugadorReal extends Jugador {
         else {
             System.out.print("¡te queda " + this.getFinanzas() + "$!");
         }
-        System.out.println(" ¿Cuanto quieres apostar? si. quieres aceptar la apuesta, escribe: a , si no quieres apostar mas escribe , na ");
+        int apuestaMasAlta = juego.getMayorApuesta();
+        int miApuesta = this.getDineroApostado();
+        String aceptar;
+        String noSubir;
+        if (apuestaMasAlta == miApuesta){
+            System.out.println(" ¿Cuanto quieres apostar? si quieres pasar, ingresa |P|, si quieres subir, escribe la CANTIDAD que quieres apostar");
+            aceptar = "P";
+            noSubir = "P";
+        }
+        else {
+            System.out.println(" ¿Cuanto quieres apostar? si. quieres aceptar la apuesta, escribe: |A| , si no quieres apostar mas escribe |NA| ");
+            aceptar="A";
+            noSubir="NA";
+        }
         int maximoNroParaSubir = dineroApostado + finanzas;
-        int apuestaMasAlta = 0;
-        for (Jugador j : juego.getJugadores())
-            if (j.getDineroApostado() > apuestaMasAlta) apuestaMasAlta = j.getDineroApostado();
-        int cantParaApostar = this.scanApuesta("a", "na", maximoNroParaSubir, apuestaMasAlta);
+        int cantParaApostar = this.scanApuesta(aceptar, noSubir, maximoNroParaSubir, apuestaMasAlta);
         this.apostarXcantidad(cantParaApostar);
     }
 
@@ -247,6 +257,10 @@ public class JugadorReal extends Jugador {
             try {
                 while (true) {
                     String line = scan.nextLine();
+                    //paso todo a mayusculas
+                    line = line.toUpperCase();
+                    aceptar = aceptar.toUpperCase();
+                    noSubir =  noSubir.toUpperCase();
                     if (line.equals(aceptar)) return nroMin;
                     if (line.equals(noSubir)) return this.getDineroApostado();
                     try {
