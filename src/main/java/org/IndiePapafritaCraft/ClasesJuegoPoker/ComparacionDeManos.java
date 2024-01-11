@@ -16,22 +16,28 @@ public enum ComparacionDeManos {
         //buscar la mejor mano
         Mano mejorMano = mostrarCartas.get(0);
         for (int x=0;x<mostrarCartasTamano;x++){
-            ComparacionDeManos resultadoMejorMano = ComparacionDeManos.comparar(mejorMano,mostrarCartas.get(x),nroMasAltoDelMazo);
-            if (resultadoMejorMano==PIERDE) mejorMano = mostrarCartas.get(x);
+            if (mejorMano != mostrarCartas.get(x)) {
+                ComparacionDeManos resultadoMejorMano = ComparacionDeManos.comparar(mejorMano, mostrarCartas.get(x), nroMasAltoDelMazo);
+                if (resultadoMejorMano == PIERDE) mejorMano = mostrarCartas.get(x);
+            }
         }
         //buscar cuantas manos empatan a la mejor mano
         ArrayList<Mano> mejoresManos = new ArrayList<Mano>();
         for (int x=0;x<mostrarCartasTamano;x++){
-            if (ComparacionDeManos.comparar(mejorMano,mostrarCartas.get(x),nroMasAltoDelMazo)==EMPATE){
+            if (mejorMano == mostrarCartas.get(x)){ //Caso en que sea la mejor mano si bien es un empate, da error porque las piernas o el poker no pueden empatar
+                mejoresManos.add(mostrarCartas.get(x));
+                continue;
+            }
+            if (ComparacionDeManos.comparar(mejorMano,mostrarCartas.get(x),nroMasAltoDelMazo)==EMPATE) {
                 mejoresManos.add(mostrarCartas.get(x));
             }
         }
         return mejoresManos;
     }
     public static ComparacionDeManos comparar(Mano A, Mano B, int nroMasAltoDelMazo){
-        ValorDeMano valorManoA= A.valorDeLaMano(nroMasAltoDelMazo,true);
+        ValorDeMano valoeManoA= A.valorDeLaMano(nroMasAltoDelMazo,true);
        ValorDeMano valorManoB = B.valorDeLaMano(nroMasAltoDelMazo,true);
-      int ordinalDeA = valorManoA.ordinal();
+      int ordinalDeA = valoeManoA.ordinal();
       int ordinalDeB = valorManoB.ordinal();
       if (ordinalDeA>ordinalDeB){return GANA;}
       if (ordinalDeA<ordinalDeB){return PIERDE;}
@@ -104,8 +110,12 @@ public enum ComparacionDeManos {
         public static ComparacionDeManos PIERNA(Mano A , Mano B){
             int nroDePiernaA =nroQueSeRepite(A);
             int nroDePiernaB =nroQueSeRepite(B);
-            if (nroDePiernaA>nroDePiernaB) return ComparacionDeManos.GANA;
-            if (nroDePiernaA<nroDePiernaB) return ComparacionDeManos.PIERDE;
+            if (nroDePiernaA>nroDePiernaB) {
+                return ComparacionDeManos.GANA;
+            }
+            if (nroDePiernaA<nroDePiernaB) {
+                return ComparacionDeManos.PIERDE;
+            }
             else System.out.println("Hay un error en el método Pierna de ComparacionDeManos");
             return EMPATE;
         }
