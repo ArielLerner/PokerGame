@@ -17,5 +17,7 @@ public class Main {
         JuegoPoker juego = JuegoPoker.crearJuegoPorArgumentos(balanceInicial, precioLuz, tipoDeJugadores, nombres, toleracionDeEstrategias);
           //JuegoPoker juego = JuegoPoker.crearJuegoTerminal(toleracionDeEstrategias);
            juego.jugar();
+        //String x = "|                                    |";
+        //System.out.println(x.length());
            }
 }
