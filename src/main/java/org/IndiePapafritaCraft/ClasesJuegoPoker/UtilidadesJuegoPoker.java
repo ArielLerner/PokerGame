@@ -19,7 +19,7 @@ public class UtilidadesJuegoPoker {
         {
             jugadores[indexPrimerJugadorEnElJuego].verApuesta();
             for (Jugador jugador : jugadores) //avisoVerApuesta
-                jugador.jugadorVeApuestaAviso(jugadores[indexMano]);
+                jugador.jugadorVeApuestaAviso(jugadores[indexPrimerJugadorEnElJuego]);
             ultimoJugadorQueSubio = modeloDeApuesta(indexPrimerJugadorEnElJuego,juego,jugadores);
         }
         return ultimoJugadorQueSubio;
@@ -85,11 +85,12 @@ public class UtilidadesJuegoPoker {
                     }
                     else { // caso se subio la apuesta
                         indexDelUltimoEnSubirLaApuesta = indexJugadorActual;
-                        indexJugadorAnterior = indexJugadorActual; //Tengo que cambiar esta variable para que guarde cual es el siguiente jugador
+                        indexJugadorAnterior = indexJugadorActual;
                         apuestaSubida = true;
                         continue; // Para que se rompa el for cuando apuesta subida != true
                     }
                 }
+                indexJugadorAnterior = indexJugadorActual;
             }
             if  (apuestaSubida==false) {
              sigueApuesta = false; }

@@ -53,7 +53,7 @@ public class UtilidadesPartesDelJuego {
 
     /**
      * siempre Es mano la posicion 0 de jugadores
-     *
+     * HOURS WASTED IN THIS CODE: Many
      * @param juego
      */
     public static void primeraApuesta(JuegoPoker juego) {

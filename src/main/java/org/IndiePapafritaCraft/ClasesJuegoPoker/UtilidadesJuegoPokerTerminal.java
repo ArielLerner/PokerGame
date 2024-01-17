@@ -67,7 +67,7 @@ public class UtilidadesJuegoPokerTerminal {
         int jugadoresReales = 0;
         //preguntar al usuario los jugadores
         System.out.println("¿De a cuantos jugadores quieres jugar?");
-        jugadoresTotales = scanIntEntreDosNros(2, 6);
+        jugadoresTotales = scanIntEntreDosNros(2, 5);
         jugadoresReales = 1;
         //hacer el array
         TipoDeJugador[] tipoDeJugador = new TipoDeJugador[jugadoresTotales];
