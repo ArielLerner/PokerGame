@@ -6,7 +6,7 @@ import org.IndiePapafritaCraft.ClasesRestantes.Mazo;
 
 public class PruebasAuxiliares {
     public static void ProbarErrores(JugadorMaquina j, int repeticiones, double toleracion){
-        Mazo mazo = new Mazo();
+        Mazo mazo = new Mazo(12);
         for (int x  = 0; x<repeticiones;x++){
             j.elegirEstrategia(toleracion);
             mazo.mezclar();

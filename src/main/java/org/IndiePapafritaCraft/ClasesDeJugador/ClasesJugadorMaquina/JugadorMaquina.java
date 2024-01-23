@@ -113,8 +113,8 @@ public class JugadorMaquina extends Jugador {
         return new Estrategia(probabilidades,cambioCartas,probDeGanar,this.manoDeJugador);
     }
     public Estrategia estrategiaEscalera(MapaFullProbs probs) {
-        int[] memorizarResultados = UtilidadesParaEscalera.memorizarResultadosDeCadaEscaleras(juego, manoDeJugador);
-        int contadorCartasParaEsc = UtilidadesGenerales.nroMasGrandeEnUnArray(memorizarResultados);
+        int[] memorizarResultados = UtilidadesParaEscalera.memorizarResultadosDeCadaEscaleras(juego, manoDeJugador); //se fija cuantas cartas hay para cada escalera
+        int contadorCartasParaEsc = UtilidadesGenerales.nroMasGrandeEnUnArray(memorizarResultados); //se fija la esalera a la que conviene buscar
         ValorYProbabilidad[] probsFinales =
                 {       new ValorYProbabilidad(0,ValorDeMano.NADA),
                         new ValorYProbabilidad(0,ValorDeMano.PAR),
@@ -122,13 +122,14 @@ public class JugadorMaquina extends Jugador {
                         new ValorYProbabilidad(0, ValorDeMano.PIERNA),
                         new ValorYProbabilidad(0, ValorDeMano.ESCALERA)  };
         boolean[] cambioCartasFinal = {false, false, false, false, false};
+
         int cantDeEscaleras = memorizarResultados.length;
         for (int escaleraActual = 0; escaleraActual < cantDeEscaleras; escaleraActual++) {
             if (memorizarResultados[escaleraActual] == contadorCartasParaEsc) {
-                boolean[] cambioCartasDeEsteCaso = UtilidadesParaEscalera.cambiarCartasParaEscalera(escaleraActual, manoDeJugador);
+                boolean[] cambioCartasDeEsteCaso = UtilidadesParaEscalera.cambiarCartasParaEscalera(escaleraActual, manoDeJugador, juego);
                 ValorYProbabilidad[] probsDeEsteCaso = UtilidadesParaEscalera.posibilidadesDeEscalera
                         (juego.cantDeNumerosDelMazo(), contadorCartasParaEsc, cambioCartasDeEsteCaso, manoDeJugador, juego,probs.mapa.get(ValorDeMano.ESCALERA));
-                if (probsDeEsteCaso[4].getProbabilidad() >= probsFinales[4].getProbabilidad()) {
+                if (probsDeEsteCaso[4].getProbabilidad() >= probsFinales[4].getProbabilidad()) { // probs[4] Es de escalera
                     probsFinales = probsDeEsteCaso;
                     cambioCartasFinal = cambioCartasDeEsteCaso;
                 }
@@ -168,7 +169,7 @@ public class JugadorMaquina extends Jugador {
         return new Estrategia(x,cambioCartas,probDeGanar,this.manoDeJugador);
     }
     public Estrategia getEst(){
-        if (this.est == null || est.getMano() != this.manoDeJugador) {est = this.elegirEstrategia(toleracionDeEstrategia);}
+        if (this.est == null || est.getMano() != this.manoDeJugador) {est = this.elegirEstrategia(toleracionDeEstrategia);} // si cambio la mano o no hay estrategia la elige
         return est;
     }
 }

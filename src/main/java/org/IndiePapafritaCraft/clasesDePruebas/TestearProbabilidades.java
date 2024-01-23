@@ -11,21 +11,47 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class TestearProbabilidades {
-    public static double[] probarTodasLasPosibilidades(Mano manoDeJugador, JuegoPoker juego, boolean[] cambioCartas, boolean escribirProbabilidades, boolean escribirNombresDeValores, boolean escribirProbsEntre0y1) {
+    /**
+     * @param nroFile puede ser entre 1 y 4, si es 0 resetea todos los files
+     * @return
+     */
+    public static double[] probarTodasLasPosibilidades(Mano mano, JuegoPoker juego, boolean[] cambioCartas, boolean escribirProbabilidades, boolean escribirNombresDeValores, boolean escribirProbsEntre0y1 , int nroFile) {
+        if (nroFile==0) {
+            try {
+                BufferedWriter writer1 = new BufferedWriter(new FileWriter("C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\clasesDePruebas\\FilesProbabilidades\\EscritorDeProbabilidades1.txt"));
+                BufferedWriter writer2 = new BufferedWriter(new FileWriter("C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\clasesDePruebas\\FilesProbabilidades\\EscritorDeProbabilidades2.txt"));
+                BufferedWriter writer3 = new BufferedWriter(new FileWriter("C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\clasesDePruebas\\FilesProbabilidades\\EscritorDeProbabilidades3.txt"));
+                BufferedWriter writer4 = new BufferedWriter(new FileWriter("C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\clasesDePruebas\\FilesProbabilidades\\EscritorDeProbabilidades4.txt"));
+            } catch (Exception x) {
+                System.out.println("TestearProbsError");
+            }
+            return new double[]{-1};
+        }
+        Mano manoCopia = new Mano(new Carta[]{new Carta(mano.getNumero(0),mano.getCard(0).getPalo()),
+                new Carta(mano.getNumero(1),mano.getCard(1).getPalo()),
+                new Carta(mano.getNumero(2),mano.getCard(2).getPalo()),
+                new Carta(mano.getNumero(3),mano.getCard(3).getPalo()),
+                new Carta(mano.getNumero(4),mano.getCard(4).getPalo()),  });
         //parametros conteo de casos
         int[] indexesDeCartasACambiar = TestearProbabilidades.indicesCartasQueSeVanACambiar(cambioCartas);
+        for (int x  = 0; x< indexesDeCartasACambiar.length;x++){
+            System.out.println("Una de las cartas que se van a cambiar es: "+ mano.getCard(indexesDeCartasACambiar[x]));
+        }
         int nroDeCartasACambiar = indexesDeCartasACambiar.length;
         int gradoDeLaFuncion = 0;
         int nroMasAltoDelMazo = juego.numeroMayorDelMazo();
         double[] conteoDeCasos = new double[10];
-        Mazo mazo = new Mazo(manoDeJugador);
-        TestearProbabilidades.conteoDeCasos(manoDeJugador, indexesDeCartasACambiar, nroDeCartasACambiar, gradoDeLaFuncion, nroMasAltoDelMazo, conteoDeCasos, mazo);
+        Mazo mazo = new Mazo(mano, juego);
+        TestearProbabilidades.conteoDeCasos(mano, indexesDeCartasACambiar, nroDeCartasACambiar, gradoDeLaFuncion, nroMasAltoDelMazo, conteoDeCasos, mazo);
         if (escribirProbsEntre0y1==true){
             TestearProbabilidades.cambiarCasosPorProbs(conteoDeCasos);
         }
         if (escribirProbabilidades == true) {
             try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\clasesDePruebas\\EscritorDeProbabilidades.txt"));
+                BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\clasesDePruebas\\FilesProbabilidades\\EscritorDeProbabilidades" + nroFile +".txt"));
+                writer.write(manoCopia.toString()); //imprime la mano
+                writer.newLine();
+
                 for (int recorrer = 0; recorrer < conteoDeCasos.length; recorrer++) {
                     if (escribirNombresDeValores == true) {
                         writer.write(ValorDeMano.getNameConOrdinal(recorrer) + ":  " + conteoDeCasos[recorrer]);
@@ -35,6 +61,13 @@ public class TestearProbabilidades {
                     writer.newLine();
                 }
                 writer.write("el numero de casos totales es de:  " + TestearProbabilidades.casosTotales(conteoDeCasos));
+                //println de prob de ganar a otra mano
+                double probDeGanarEntre0y1 = 0;
+                for (int x = 0; x<10;x++){
+                    probDeGanarEntre0y1 = probDeGanarEntre0y1 + ValorDeMano.getEnumConOrdinal(x).getProbDeGanarUnaMano()*conteoDeCasos[x];
+                }
+                writer.newLine();
+                writer.write("La probabilidad de ganarle a otra mano es de: " + probDeGanarEntre0y1*100 + "%");
                 writer.close();
             } catch (IOException x) {
                 System.out.println("ha habido un error en la escritura");

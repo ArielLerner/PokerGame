@@ -50,7 +50,7 @@ public class JuegoPoker {
         int precioDeLuz = UtilidadesJuegoPokerTerminal.scanPrecioDeLuz(nroDeBalanceInicial);
         int nroDeJugadores = tipoDeJugadores.length;
         String[] nombres  = UtilidadesJuegoPokerTerminal.scanNombreDeJugadores(nroDeJugadores);
-        Mazo mazo1  = JuegoPoker.crearMazo(nroDeJugadores);
+        Mazo mazo1  = JuegoPoker.crearMazo(UtilidadesJuegoPokerTerminal.scanMenorNroDelMazo(nroDeJugadores));
         JuegoPoker juego = new JuegoPoker(mazo1,precioDeLuz,nroDeBalanceInicial, toleracionDeEstrategia);
         //Hacer los jugadores
         Mano[] manos = juego.crearManosDeJugadores(nroDeJugadores);
@@ -59,9 +59,9 @@ public class JuegoPoker {
         juego.getDatos().setBalanceInicial(nroDeBalanceInicial); //Establece el balance inicial de un jugador
         return juego;
     }
-    public static JuegoPoker crearJuegoPorArgumentos(int balanceInicial, int precioLuz, TipoDeJugador[] tipoDeJugadores, String[] nombres,double toleracionEstrategias) {
+    public static JuegoPoker crearJuegoPorArgumentos(int balanceInicial, int precioLuz, TipoDeJugador[] tipoDeJugadores, String[] nombres,double toleracionEstrategias, int nroMinimo) {
         int nroDeJugadores = nombres.length;
-        Mazo mazo1 = JuegoPoker.crearMazo(nroDeJugadores);
+        Mazo mazo1 = JuegoPoker.crearMazo(nroMinimo);
         JuegoPoker juego = new JuegoPoker(mazo1, precioLuz, balanceInicial, toleracionEstrategias);
         Mano[] manos = juego.crearManosDeJugadores(nroDeJugadores);
         Jugador [] jugador = juego.crearJugadores(nroDeJugadores, tipoDeJugadores, manos, balanceInicial,nombres,toleracionEstrategias );
@@ -69,8 +69,13 @@ public class JuegoPoker {
         return juego;
     }
 
-    public static Mazo crearMazo(int nroDeJugadores){
-        return new Mazo();
+    /**
+     * @param nroMinimo el nro min va del 1 al 13, el 13 es el as, el 12 la k y asi...
+     */
+
+    public static Mazo crearMazo(int nroMinimo){
+        System.out.println(new Mazo( nroMinimo));
+        return new Mazo(nroMinimo);
     }
     /**
      * crea las manos de los jugadores

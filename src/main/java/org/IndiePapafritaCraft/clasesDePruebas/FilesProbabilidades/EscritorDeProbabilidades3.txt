@@ -1,0 +1,12 @@
+| cuatro de  trebol  | nueve de  trebol  | j de  corazon  | k de  picas  | as de  trebol  | 
+NADA:  0.5681063122923588
+PAR:  0.3920265780730897
+DOBLEPAR:  0.029900332225913623
+PIERNA:  0.009966777408637873
+ESCALERA:  0.0
+COLOR:  0.0
+FULL:  0.0
+POKER:  0.0
+ESCALERADECOLOR:  0.0
+ESCALERAREAL:  0.0
+el numero de casos totales es de:  0.9999999999999999

@@ -49,7 +49,12 @@ public class UtilidadesParaEscalera {
                         break;
                 }
             case 4:
-                int numeroDeCartasEnEsc = UtilidadesParaEscalera.cuantasCartasEnEscalera(contador, cambioCartas, manoDeJugador);
+                //System.out.println(manoDeJugador);
+                //for (int x = 0;x<5;x++){
+                  //  System.out.println(cambioCartas[x]);
+                //}
+
+                int numeroDeCartasEnEsc = UtilidadesParaEscalera.  cuantasCartasEnEscalera(contador, cambioCartas, manoDeJugador);
                 int distanciaCartaMenor = UtilidadesGenerales.distCartaMenorMazoConMax(manoDeJugador.cartaMenorNoCambiar(cambioCartas), 1,juego);
                 int distanciaCartaMayor = UtilidadesGenerales.distCartaMayorMazoConMax(manoDeJugador.cartaMayorNoCambiar(cambioCartas), 1,juego);
                 if (numeroDeCartasEnEsc == 4 &&
@@ -68,11 +73,14 @@ public class UtilidadesParaEscalera {
      * @param nroDeEsc es un entero que representa el numero de inicio de la escalera
      * @return devuelve un array con true en las que se cambiarian y false en las que no
      */
-    public static boolean[] cambiarCartasParaEscalera(int nroDeEsc, Mano manoDeJugador) {
+    public static boolean[] cambiarCartasParaEscalera(int nroDeEsc, Mano manoDeJugador, JuegoPoker juego) {
+        int nroMayorMazo = juego.numeroMayorDelMazo();
+        int nroMenorMazo = juego.numeroMenorDelMazo();
+        manoDeJugador= manoDeJugador;
         boolean[] cambioCartas = new boolean[]{true, true, true, true, true};
         for (int recorrerEsc = 0; recorrerEsc < 5; recorrerEsc++) {
             for (int nroDeCarta = 0; nroDeCarta < 5; nroDeCarta++) {
-                int posEsc = nroDeEsc + recorrerEsc;
+                int posEsc  = nroDeEsc + recorrerEsc + nroMenorMazo;
                 if (posEsc == manoDeJugador.getCard(nroDeCarta).getNumero()) {
                     cambioCartas[nroDeCarta] = false;
                     break;
@@ -122,7 +130,7 @@ public class UtilidadesParaEscalera {
     public static int[] memorizarResultadosDeCadaEscaleras(JuegoPoker juego, Mano manoDeJugador) {
         int escalerasTotales = juego.cantDeNumerosDelMazo() - 4;
         int[] memorizarResultados = new int[escalerasTotales];
-        for (int nDeEscalera = 0; nDeEscalera < escalerasTotales; nDeEscalera++) {
+        for (int nDeEscalera = juego.numeroMenorDelMazo(); nDeEscalera < escalerasTotales + juego.numeroMenorDelMazo(); nDeEscalera++) {
             int cuentaMomentanea = 0;
             for (int posEscalera = 0; posEscalera < 5; posEscalera++) {
                 int posicionBuscada = nDeEscalera + posEscalera;
@@ -133,7 +141,7 @@ public class UtilidadesParaEscalera {
                     }
                 }
             }
-            memorizarResultados[nDeEscalera] = cuentaMomentanea;
+            memorizarResultados[nDeEscalera - juego.numeroMenorDelMazo()] = cuentaMomentanea; // le quito el nroMenorDelMazo para que empiece en 0 y vaya sumando
         }
         return memorizarResultados;
     }

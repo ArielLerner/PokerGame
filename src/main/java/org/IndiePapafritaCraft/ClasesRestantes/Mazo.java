@@ -1,5 +1,6 @@
 package org.IndiePapafritaCraft.ClasesRestantes;
 
+import org.IndiePapafritaCraft.ClasesJuegoPoker.JuegoPoker;
 import org.IndiePapafritaCraft.ClasesRestantes.Carta;
 import org.IndiePapafritaCraft.ClasesRestantes.Mano;
 
@@ -8,11 +9,13 @@ public class Mazo {
     /**
      Crea un mazo con todas las cartas, los numeros van del 0 al 12 y los palos del 0 al 3
      */
-    public Mazo() {
-        Carta[] mazo2 = new Carta[52];
-        for (int n = 0; n < 13; n++) {
+    public Mazo(int nroMinimo ) {
+        int contador = 0;
+        Carta[] mazo2 = new Carta[(13-nroMinimo)*4];
+        for (int n = nroMinimo; n < 13; n++) {
             for (int p = 0; p < 4; p++) {
-                mazo2[4 * n + p] = new Carta(n, p);
+                mazo2[contador] = new Carta(n, p);
+                contador++;
             }
         }
         mazo= mazo2;
@@ -21,16 +24,18 @@ public class Mazo {
     /**
      * @param manoDeJugador crea un mazo sin las cartas de la mano
      */
-    public Mazo(Mano manoDeJugador) {
-         int contadorDeCartasDeLaMano=0;
-        Carta[] mazo2 = new Carta[47];
-        for (int n = 0; n < 13; n++) {
+    public Mazo(Mano manoDeJugador, JuegoPoker juego) {
+         int posMazo2=0;
+        Carta[] mazo2 = new Carta[juego.getMazo().getMazo().length-5];
+        for (int n = juego.numeroMenorDelMazo() ; n < 13; n++) {
             for (int p = 0; p < 4; p++) {
                 if (manoDeJugador.chequearSiUnaCartaEstaEnUnaMano(new Carta(n,p))){
-                    contadorDeCartasDeLaMano++;
-                    continue;
                 }
-                mazo2[4 * n + p - contadorDeCartasDeLaMano] = new Carta(n, p);
+                else {
+                    mazo2[posMazo2] = new Carta(n, p);
+                    posMazo2++;
+                }
+
             }
         }
         mazo= mazo2;
@@ -41,8 +46,10 @@ public class Mazo {
     public void mezclar(){
         Carta cartaMomentanea;
         int numeroRandom= 0;
-        for (int x=0; x<52;x++){
-            numeroRandom=x+(int)(Math.random()*(52-x));
+        int nroMaxMazo = mazo.length;
+        for (int x=0; x< nroMaxMazo;x++){
+            numeroRandom=x+(int)(Math.random()*(nroMaxMazo-x));
+            //Swap de mazo[x] mazo[posRandom]
             cartaMomentanea=this.mazo[numeroRandom];
             this.mazo[numeroRandom]= this.mazo[x];
             this.mazo[x]=cartaMomentanea;
@@ -90,10 +97,10 @@ public class Mazo {
         return this.division((9*numeroDeJugador)+5,4);
     }
     public int numeroMayor(){
-       return  (mazo.length/4)-1;
+       return 12;
     }
     public int numeroMenor(){
-        return 0;
+        return 13 - (mazo.length/4);
     }
 }
 

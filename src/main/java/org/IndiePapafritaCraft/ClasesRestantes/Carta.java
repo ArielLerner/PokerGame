@@ -10,6 +10,17 @@ public class Carta {
         numero=numeroDeCarta;
         palo=paloDeCarta;
     }
+    public Carta(String nro ,int paloDeCarta){
+        palo = paloDeCarta;
+        for (int x = 0 ; x< numeros.length;x++){
+            if (nro.toUpperCase().equals(numeros[x])){
+                numero = x;
+                return;
+            }
+        }
+        System.out.println("Ha habido una carta escrita mal");
+        numero = 1;
+    }
     /**
      Pasa un objeto de la clase Carta a string
      */

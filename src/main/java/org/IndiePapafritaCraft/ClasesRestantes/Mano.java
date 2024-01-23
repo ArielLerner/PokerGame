@@ -15,6 +15,10 @@ public class Mano {
         this.ordenar();
     }
 
+    public Carta[] getCartaArray() {
+        return mano;
+    }
+
     /**
      * en este constructor se pasa solo el numero y todas las cartas son asignadas al palo 0, no repetir numeros
      */

@@ -11,7 +11,7 @@ public class Estrategia {
     private double probDeGanarObjetiva;
     private Mano mano;
     private int apuestaMax; // la apuesta max se settea cuando el jugador maquina termina de hacer la apuesta
-    private PartesDelJuego momentoApuestaMax; // contiene si apuesta max fue diseñado para PrimeraApuesta o SegundaApuesta
+    private PartesDelJuego apuestaEnEsteMomento; // contiene si apuesta max fue diseñado para PrimeraApuesta o SegundaApuesta
 
     public Estrategia(ValorYProbabilidad[] relacionesEntreValorYProbabilidad, boolean[] cartasCambio, double probObjetivaDeGanar, Mano mano2) {
         valoresYprobabilidades = relacionesEntreValorYProbabilidad;
@@ -55,9 +55,9 @@ public class Estrategia {
     }
     public int singletonApuestaMax(JugadorMaquina x) {
         PartesDelJuego proxApuesta = Estrategia.proximaApuesta(x.getJuego().getParteDelJuego());
-        if (apuestaMax == -1 || proxApuesta.ordinal()!= momentoApuestaMax.ordinal() ) { // el ordinal para ver si son iguales
+        if (apuestaMax == -1 || proxApuesta.ordinal()!= apuestaEnEsteMomento.ordinal() ) { // si no hay apuesta max o si cambio de apuesta, se hace de vuelta apuestaMax
             apuestaMax = MetodosDeApuestas.apuestaMax(x);
-            momentoApuestaMax = proxApuesta;
+            apuestaEnEsteMomento = proxApuesta;
         }
             return apuestaMax;
     }

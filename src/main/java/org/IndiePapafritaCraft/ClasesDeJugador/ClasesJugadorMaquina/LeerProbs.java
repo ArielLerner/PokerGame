@@ -13,7 +13,7 @@ public class LeerProbs {
     public static MapaFullProbs leerProbGenerales(int cantDeCartasDelMazo) {
         HashMap<ValorDeMano, FullProb[]> posibilidadesGenerales = new HashMap<>();
         try {
-            String filePath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeJugador\\ClasesJugadorMaquina\\UtilidadesCpu\\EstadisticasDelJuegoPoker\\Files\\probsEstrategia\\52CartasProbs";
+            String filePath = "C:\\Users\\Gamer\\OneDrive\\Escritorio\\PokerGame\\src\\main\\java\\org\\IndiePapafritaCraft\\ClasesDeJugador\\ClasesJugadorMaquina\\UtilidadesCpu\\EstadisticasDelJuegoPoker\\Files\\probsEstrategia\\CartaMenor2Probs";
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             String line = reader.readLine();
             while (LeerProbs.stringConNada(line) == false) {
