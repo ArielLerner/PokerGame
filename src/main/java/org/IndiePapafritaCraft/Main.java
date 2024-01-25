@@ -19,19 +19,8 @@ public class Main {
         double toleracionDeEstrategias = 0.2;
         int nroMinimoMazo = 10; //Es el nro  //IR CAMBIANDO
 
-        JuegoPoker juego = JuegoPoker.crearJuegoPorArgumentos(balanceInicial, precioLuz, tipoDeJugadores, nombres, toleracionDeEstrategias,nroMinimoMazo-2);
-          //JuegoPoker juego = JuegoPoker.crearJuegoTerminal(toleracionDeEstrategias);
-           //juego.jugar();
-         Carta[] abcd = new Carta[] {new Carta("diez",1), //IR CAMBIANDO
-                                    new Carta("j",2),
-                                    new Carta("as",3),
-                                     new Carta("as",0),
-                                      new Carta("as",1)};
-         Mano m = new Mano(abcd);
-         System.out.println(m);
-         boolean c =  true;
-         boolean nc = false;
-         boolean[] cambioCartas = {c,c,nc,nc,nc};  //CAMBIAR CADA VEZ
-        TestearProbabilidades.probarTodasLasPosibilidades(m,juego,cambioCartas,true,false,true, 4);
+        //JuegoPoker juego = JuegoPoker.crearJuegoPorArgumentos(balanceInicial, precioLuz, tipoDeJugadores, nombres, toleracionDeEstrategias,nroMinimoMazo-2);
+          JuegoPoker juego = JuegoPoker.crearJuegoTerminal(toleracionDeEstrategias);
+           juego.jugar();
            }
 }

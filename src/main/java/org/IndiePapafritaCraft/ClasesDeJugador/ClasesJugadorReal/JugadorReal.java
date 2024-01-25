@@ -10,7 +10,6 @@ import org.IndiePapafritaCraft.ValoresJuntados.TipoDeJugador;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.SplittableRandom;
 import java.util.StringTokenizer;
 
 public class JugadorReal extends Jugador {
@@ -55,6 +54,7 @@ public class JugadorReal extends Jugador {
     }
 
     public void pagarLuzAviso() {
+        this.singletonMayorApuesta1eraRonda(true); // hace que se borre la apuestaMayor de primera ronda cuando empieza la mano
         int nroDeJugEnJuego = 0;
         Jugador[] jugadores = juego.getJugadores();
         System.out.print("Los jugadores que juegan son: ");
@@ -88,9 +88,8 @@ public class JugadorReal extends Jugador {
             }
         }
         if (x.getJuego().getParteDelJuego() == PartesDelJuego.SEGUNDAAPUESTA) { //caso pasar segunda apuesta
-            int indexJugadorApuestaMax1eraApuesta = juego.getDatos().getIndexUltimoJugadorQueSubioApuesta();
-            int apuestaMax1eraApuesta = juego.getJugadores()[indexJugadorApuestaMax1eraApuesta].getDineroApostado();
-            if (x.getDineroApostado() == apuestaMax1eraApuesta && x.getDineroApostado() == juego.getMayorApuesta()) {
+            int mayorApuestaRonda1 = this.singletonMayorApuesta1eraRonda(false);
+            if (x.getDineroApostado() == mayorApuestaRonda1  && x.getDineroApostado() == juego.getMayorApuesta()) {
                 if (x == this) {
                     System.out.println("has pasado, tu apuesta es de " + x.getDineroApostado());
                 } else {
@@ -116,7 +115,6 @@ public class JugadorReal extends Jugador {
     }
 
     public void cambioCartasAviso(Jugador x, int cartasCambiadas) {
-        System.out.println();
         if (x == this) { // para que printee el cambio de cartas
             Mano mano = this.getMano();
             System.out.println("Mano con cartas cambiadas: ");
@@ -126,7 +124,7 @@ public class JugadorReal extends Jugador {
             System.out.println("El jugador: " + x.getNombre() + " cambio " + cartasCambiadas + " cartas");
 
         }
-
+        System.out.println();
     }
 
     /**
@@ -412,5 +410,21 @@ public class JugadorReal extends Jugador {
         return " --> ";
     }
 
+    /**
+     * @param x si x==true se resetea
+     */
+    private int mayorApuestaRonda1Apuestas=-1;
+    public int singletonMayorApuesta1eraRonda(boolean x){
+        if (x==true ){
+         mayorApuestaRonda1Apuestas= -1;
+         return mayorApuestaRonda1Apuestas;
+        }
+        else {
+            if (mayorApuestaRonda1Apuestas==-1){
+                mayorApuestaRonda1Apuestas = juego.getJugadores()[juego.getDatos().getIndexUltimoJugadorQueSubioApuesta()].getDineroApostado(); // se fija la apuesta  del jugador que subio ultimo
+            }
+            return mayorApuestaRonda1Apuestas;
+        }
+    }
 }
 

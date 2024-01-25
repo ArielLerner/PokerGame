@@ -192,16 +192,16 @@ public class UtilidadesJuegoPokerTerminal {
                         continue;
                     }
                     if (nroJug==2){
-                        if (lineaEntre2numeros(2,10,line))return (Integer.parseInt(line))-1;//Le resto 1 para que empiece desde el numero qeu se ingresa
+                        if (lineaEntre2numeros(2,10,line))return (Integer.parseInt(line))-2;//Le resto 1 para que empiece desde el numero qeu se ingresa
                     }
                     if (nroJug==3){
-                        if (lineaEntre2numeros(2,8,line))return (Integer.parseInt(line))-1;
+                        if (lineaEntre2numeros(2,8,line))return (Integer.parseInt(line))-2;
                     }
                     if (nroJug==4){
-                        if (lineaEntre2numeros(2,6,line))return (Integer.parseInt(line))-1;
+                        if (lineaEntre2numeros(2,6,line))return (Integer.parseInt(line))-2;
                     }
                     if (nroJug==5){
-                        if (lineaEntre2numeros(2,3,line))return (Integer.parseInt(line))-1;
+                        if (lineaEntre2numeros(2,3,line))return (Integer.parseInt(line))-2;
                     }
                 }
             }

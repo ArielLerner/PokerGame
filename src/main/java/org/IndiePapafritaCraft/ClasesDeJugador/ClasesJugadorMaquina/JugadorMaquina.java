@@ -32,10 +32,37 @@ public class JugadorMaquina extends Jugador {
     private double toleracionDeEstrategia;
 
     public void verApuesta() {
-        int cantAsubir = this.getEst().singletonApuestaMax(this); //devuelve el nro que le gustaria subir a la maquina
-        if (cantAsubir<this.getDineroApostado()) cantAsubir = this.getDineroApostado(); //caso de que quiera apostar negativo
-        if (cantAsubir>this.getDineroApostado() && cantAsubir<juego.getMayorApuesta()) cantAsubir = this.getDineroApostado(); // caso: se apuesta de mas
-        this.apostarXcantidad(cantAsubir);
+        Estrategia est = this.getEst();
+        int apuestaMax = est.singletonApuestaMax(this); //calcula el nroMaximo que le gustaria subir a la maquina
+        int cantidadParaApostar;
+        if (juego.getMayorApuesta()>apuestaMax){//Debo configurar el caso
+            cantidadParaApostar = this.casoAMayorSuperaAmax(apuestaMax,juego.getMayorApuesta());
+        }
+        else {
+            cantidadParaApostar = this.aQueCantidadSeQuiereSubir(apuestaMax);
+        }
+        if (cantidadParaApostar<this.getDineroApostado()) cantidadParaApostar = this.getDineroApostado(); //caso de que quiera apostar negativo
+        if (cantidadParaApostar>this.getDineroApostado() && cantidadParaApostar<juego.getMayorApuesta()) cantidadParaApostar = this.getDineroApostado(); // caso: se apuesta de mas
+        if (cantidadParaApostar>juego.getMayorApuesta() && cantidadParaApostar/juego.getMayorApuesta()<1.05) cantidadParaApostar = juego.getMayorApuesta();//Esta lina acepta la apuesta si lo que se va a subir es muy poco
+        this.apostarXcantidad(cantidadParaApostar);
+    }
+    public int aQueCantidadSeQuiereSubir(int apuestaMax){
+        int apuestaMinima = MetodosDeApuestas.apuestaMinima(this);
+        int balanceInicial = juego.getDatos().getBalanceInicial();
+        int cantidadParaApostar =  MetodosDeApuestas.aCuantoSubir(apuestaMax,apuestaMinima,this.getDineroApostado(),balanceInicial);
+        return cantidadParaApostar;
+    }
+
+    /**
+     * @return devuelve la cant a subir
+     */
+    public int casoAMayorSuperaAmax(int aMax, int aMayor){
+        if (aMax==0) return this.getDineroApostado(); //caso en que aMax es 0
+        else {
+            double probNoSubir = Math.sqrt((aMayor - aMax) / aMax);
+            if (Math.random() < probNoSubir) return this.dineroApostado; //caso no subir
+            else return aMayor;
+        }
     }
     public boolean[] cambioCartas(){
         return est.getCartasParaCambiar();

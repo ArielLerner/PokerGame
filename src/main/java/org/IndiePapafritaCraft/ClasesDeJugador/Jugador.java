@@ -74,6 +74,9 @@ public abstract class Jugador {
      */
     public void apostarXcantidad(int x){
         int nuevoDineroApostado = x - this.dineroApostado;
+        if (nuevoDineroApostado<0) {
+            return;
+        }
         this.restarXaLasFinanzas(nuevoDineroApostado);
         this.sumarXalDineroApostado(nuevoDineroApostado);
     }

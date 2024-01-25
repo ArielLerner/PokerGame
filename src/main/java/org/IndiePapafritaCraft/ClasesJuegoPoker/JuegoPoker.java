@@ -35,7 +35,7 @@ public class JuegoPoker {
     public JuegoPoker(Mazo mazoDelJuego, int precioDeLuz2, int balanceInicial, double toleracionDeEstrategia) {
         mazo = mazoDelJuego;
         precioDeLuz= precioDeLuz2;
-        datos = new DatosMomentaneos(0,toleracionDeEstrategia);
+        datos = new DatosMomentaneos(0,balanceInicial);
     }
     public void setJugadores(Jugador[] jugadores2){
         jugadores=jugadores2;
@@ -56,7 +56,6 @@ public class JuegoPoker {
         Mano[] manos = juego.crearManosDeJugadores(nroDeJugadores);
         Jugador[] jugadores = juego.crearJugadores(nroDeJugadores,tipoDeJugadores,manos,nroDeBalanceInicial,nombres, toleracionDeEstrategia);
         juego.setJugadores(jugadores);
-        juego.getDatos().setBalanceInicial(nroDeBalanceInicial); //Establece el balance inicial de un jugador
         return juego;
     }
     public static JuegoPoker crearJuegoPorArgumentos(int balanceInicial, int precioLuz, TipoDeJugador[] tipoDeJugadores, String[] nombres,double toleracionEstrategias, int nroMinimo) {
@@ -74,7 +73,6 @@ public class JuegoPoker {
      */
 
     public static Mazo crearMazo(int nroMinimo){
-        System.out.println(new Mazo( nroMinimo));
         return new Mazo(nroMinimo);
     }
     /**

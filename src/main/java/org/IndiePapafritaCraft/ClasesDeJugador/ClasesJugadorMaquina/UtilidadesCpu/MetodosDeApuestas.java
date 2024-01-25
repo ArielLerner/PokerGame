@@ -194,30 +194,21 @@ public class MetodosDeApuestas {
     }
 
     public static int apuestaMax(JugadorMaquina x) {
-        int apuestaMax = 0;
         PartesDelJuego parteDelJuego = x.getJuego().getDatos().getParteDelJuego();
-        Estrategia estrategia = x.getEst();
-        if (parteDelJuego == PartesDelJuego.PRIMERAAPUESTA   )
-            apuestaMax = MetodosDeApuestas.apuestaMax1eraApuesta(x, estrategia.getProbDeGanarObjetiva(), Singleton.get(x).estimacionDeRondas);
-        if (parteDelJuego == PartesDelJuego.SEGUNDAAPUESTA)
-            apuestaMax = MetodosDeApuestas.apuestaMax2daApuesta(x, estrategia.getProbDeGanarObjetiva(), Singleton.get(x).estimacionDeRondas);
-        return apuestaMax;
-    }
-
-    /**
-     * @return devuelve lo mismo que en apuestaMax2daRonda solo que se divide por 1/2 si apuestaMax>2*apuestaMin
-     */
-    private static int apuestaMax1eraApuesta(Jugador x, double probaDeGanar, int estimacionDeRondas) {
-        int apuestaMax2daRonda = apuestaMax2daApuesta(x, probaDeGanar, estimacionDeRondas);
+        Estrategia est = x.getEst();
+        double camax = camax(x.getJuego(),est.getProbDeGanarObjetiva(), Singleton.get(x).estimacionDeRondas);
         int apuestaMin = apuestaMinima(x);
-        if (apuestaMax2daRonda > 2 * apuestaMin) apuestaMax2daRonda = apuestaMax2daRonda / 2;
-        return apuestaMax2daRonda;
+        int dineroTotal = x.getFinanzas() + x.getDineroApostado();
+        int apuestaMax = (int) (camax * dineroTotal);
+        if (apuestaMax < apuestaMin && apuestaMax < 20 / 100 * x.getJuego().getDatos().getBalanceInicial()) //si ap.Max es menor a ap.Min y al 20% del balance inicial, se apuesta aMin
+            apuestaMax = apuestaMin;
+        return apuestaMax;
     }
 
     private static int apuestaMax2daApuesta(Jugador x, double probDeGanar, int estimacionDeRondas) {
         double camax = camax(x.getJuego(), probDeGanar, estimacionDeRondas);
         int apuestaMin = apuestaMinima(x);
-        int dineroTotal = x.getFinanzas();
+        int dineroTotal = x.getFinanzas() + x.getDineroApostado();
         int apuestaMax = (int) (camax * dineroTotal);
         if (apuestaMax < apuestaMin && apuestaMax < 20 / 100 * x.getJuego().getDatos().getBalanceInicial())
             apuestaMax = apuestaMin;
@@ -401,7 +392,7 @@ public class MetodosDeApuestas {
             return (beneficio / 2) * 2 / 3;
 
         } else {
-            //caso  (beneficio > 1) uso una funcion logarÃ­tmica
+            //caso  (beneficio > 1) uso una funcion logaritmica
             // resto 1 al beneficio para obtener un nro en rango: 0-(cantDeJug-1)
             beneficio--;
             return MetodosDeApuestas.logaritmo(12.901, (9.309 * beneficio / (cantDeJug - 1) + 3.591));
@@ -422,5 +413,14 @@ public class MetodosDeApuestas {
         if (resultado > 1) resultado = 1;
         if (resultado < 0) resultado = 0;
         return resultado;
+    }
+
+    /**
+     * @return este metodo devuelve a cuanto deberia subir la apuesta la maquina
+     */
+    public static int aCuantoSubir(int apuestaMax, int apuestaMin, int apuestaAhora, int balanceInicial){
+       int aCuantoSubir =  apuestaAhora + (apuestaMax/balanceInicial)+1 * apuestaMin;
+       if (aCuantoSubir>apuestaMax) aCuantoSubir = apuestaMax;
+       return aCuantoSubir;
     }
 }

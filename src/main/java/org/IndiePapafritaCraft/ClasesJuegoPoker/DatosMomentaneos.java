@@ -23,8 +23,9 @@ public class DatosMomentaneos {
 
     private int balanceInicial; //Es el balance con el que empiezan los jugadores
 
-    public DatosMomentaneos(int indexDelUltimoQueSubio, double toleracionDeEstrategia) {
+    public DatosMomentaneos(int indexDelUltimoQueSubio, int balanceInicial) {
         indexUltimoJugadorQueSubioApuesta = indexDelUltimoQueSubio;
+        this.balanceInicial = balanceInicial;
     }
 
     public void setIndexUltimoJugadorQueSubioApuesta(int indexUltimoJugadorQueSubioApuesta) {
